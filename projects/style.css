@@ -18,6 +18,10 @@ html{
 body{
   background: #f7f7f7;
   font-family: 'Poppins', sans-serif;
+  text-transform: none;
+}
+body *{
+  text-transform: none;
 }
 
 *::selection{
@@ -91,7 +95,7 @@ header .navbar ul li a{
   color: #0E2431;
   font-weight: 600;
   text-decoration: none;
-  letter-spacing: 0.04rem;
+  letter-spacing: 0;
 }
 header .navbar ul li a.active,
 header .navbar ul li a:hover{
