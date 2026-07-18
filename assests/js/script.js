@@ -251,7 +251,15 @@ function setupTimelineFocus() {
       if (!entry.isIntersecting) return;
       items.forEach((item) => item.classList.toggle('active', item === entry.target));
       if (motionAllowed) {
-        anime({ targets: entry.target, translateY: [22, 0], duration: 600, easing: 'easeOutCubic' });
+        anime.timeline({ easing: 'easeOutCubic' })
+          .add({ targets: entry.target, translateY: [22, 0], duration: 600 })
+          .add({
+            targets: $$('.role-details li', entry.target),
+            translateX: [14, 0],
+            opacity: [0.35, 1],
+            delay: anime.stagger(55),
+            duration: 420
+          }, '-=360');
       } else {
         entry.target.style.transform = 'none';
       }
@@ -259,6 +267,35 @@ function setupTimelineFocus() {
   }, { threshold: 0.5, rootMargin: '-12% 0px -28% 0px' });
 
   items.forEach((item) => observer.observe(item));
+}
+
+function setupEducationFocus() {
+  const chapters = $$('.education-chapter');
+  if (chapters.length === 0) return;
+
+  if (!('IntersectionObserver' in window)) {
+    chapters.forEach((chapter) => chapter.classList.add('active'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      chapters.forEach((chapter) => chapter.classList.toggle('active', chapter === entry.target));
+      if (motionAllowed) {
+        anime({
+          targets: $$('.chapter-meta, .education-copy h3, .education-copy > strong, .education-copy > p', entry.target),
+          translateY: [18, 0],
+          opacity: [0.35, 1],
+          delay: anime.stagger(70),
+          duration: 620,
+          easing: 'easeOutCubic'
+        });
+      }
+    });
+  }, { threshold: 0.42, rootMargin: '-8% 0px -18% 0px' });
+
+  chapters.forEach((chapter) => observer.observe(chapter));
 }
 
 function setupPointerInteractions() {
@@ -406,6 +443,33 @@ function setupSignalMotion() {
   });
 }
 
+function setupLanguageMotion() {
+  const languageTokens = $$('.language-orbit span');
+  if (!motionAllowed || languageTokens.length === 0) return;
+
+  languageTokens.forEach((token, index) => {
+    anime({
+      targets: token,
+      translateY: index % 2 === 0 ? [-8, 9] : [10, -7],
+      rotate: index % 2 === 0 ? [-3, 4] : [4, -3],
+      direction: 'alternate',
+      loop: true,
+      duration: 1700 + index * 180,
+      easing: 'easeInOutSine'
+    });
+  });
+
+  anime({
+    targets: '.location-route i',
+    scaleX: [0.15, 1],
+    transformOrigin: 'left center',
+    direction: 'alternate',
+    loop: true,
+    duration: 1800,
+    easing: 'easeInOutCubic'
+  });
+}
+
 function setupPageTitle() {
   const favicon = $('#favicon');
   document.addEventListener('visibilitychange', () => {
@@ -425,6 +489,7 @@ setupSmoothAnchors();
 setupRevealAnimations();
 setupCounters();
 setupTimelineFocus();
+setupEducationFocus();
 setupPointerInteractions();
 setupClickFeedback();
 setupScrollMotion();
@@ -434,6 +499,7 @@ if (motionAllowed) {
   runHeroSequence();
   setupMarquee();
   setupSignalMotion();
+  setupLanguageMotion();
 } else {
   showStaticFallback();
 }

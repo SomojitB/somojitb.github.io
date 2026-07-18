@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap");
 
 :root {
   --paper: #f4f1e9;
@@ -22,6 +22,7 @@
   padding: 0;
   border: 0;
   letter-spacing: 0;
+  word-spacing: 0;
 }
 
 html {
@@ -36,7 +37,8 @@ body {
   overflow-x: hidden;
   color: var(--ink);
   background: var(--paper);
-  font-family: "DM Sans", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -167,7 +169,7 @@ img {
   border-radius: 5px;
   color: var(--ink);
   background: var(--acid);
-  font: 700 1.3rem "Space Grotesk", sans-serif;
+  font: 700 1.3rem "Manrope", sans-serif;
 }
 
 .navbar {
@@ -259,7 +261,7 @@ img {
   gap: 10px;
   margin-bottom: 26px;
   color: var(--ink-soft);
-  font: 600 1.22rem "Space Grotesk", sans-serif;
+  font: 600 1.22rem "Manrope", sans-serif;
   text-transform: uppercase;
 }
 
@@ -274,7 +276,7 @@ img {
 
 .hero-title {
   max-width: 790px;
-  font: 700 clamp(6.8rem, 8.15vw, 12rem) / 0.82 "Space Grotesk", sans-serif;
+  font: 700 clamp(6.8rem, 8.15vw, 12rem) / 0.82 "Manrope", sans-serif;
 }
 
 .title-line {
@@ -404,7 +406,7 @@ img {
 }
 
 .hero-portrait figcaption strong {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Manrope", sans-serif;
 }
 
 .orbit-label {
@@ -419,7 +421,7 @@ img {
   color: var(--ink);
   background: var(--paper-bright);
   box-shadow: 4px 4px 0 var(--ink);
-  font: 600 1.12rem "Space Grotesk", sans-serif;
+  font: 600 1.12rem "Manrope", sans-serif;
   white-space: nowrap;
 }
 
@@ -461,7 +463,7 @@ img {
   display: flex;
   align-items: center;
   gap: 10px;
-  font: 600 1.1rem "Space Grotesk", sans-serif;
+  font: 600 1.1rem "Manrope", sans-serif;
   text-transform: uppercase;
   writing-mode: vertical-rl;
 }
@@ -488,7 +490,7 @@ img {
 }
 
 .marquee-group span {
-  font: 600 1.35rem "Space Grotesk", sans-serif;
+  font: 600 1.35rem "Manrope", sans-serif;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -526,13 +528,13 @@ img {
 .section-index {
   padding-top: 10px;
   color: var(--muted);
-  font: 600 1.15rem "Space Grotesk", sans-serif;
+  font: 600 1.15rem "Manrope", sans-serif;
   text-transform: uppercase;
 }
 
 .section-intro h2 {
   max-width: 760px;
-  font: 600 clamp(4.6rem, 6.2vw, 8rem) / 0.96 "Space Grotesk", sans-serif;
+  font: 600 clamp(4.6rem, 6.2vw, 8rem) / 0.96 "Manrope", sans-serif;
 }
 
 .section-copy {
@@ -582,7 +584,7 @@ img {
 .impact-grid strong {
   display: flex;
   align-items: flex-start;
-  font: 600 clamp(5rem, 6.5vw, 8.8rem) / 0.86 "Space Grotesk", sans-serif;
+  font: 600 clamp(5rem, 6.5vw, 8.8rem) / 0.86 "Manrope", sans-serif;
 }
 
 .impact-grid sup {
@@ -640,12 +642,12 @@ img {
 
 .row-number {
   color: rgba(255, 255, 255, 0.46);
-  font: 600 1.12rem "Space Grotesk", sans-serif;
+  font: 600 1.12rem "Manrope", sans-serif;
 }
 
 .expertise-row h3 {
   margin-bottom: 12px;
-  font: 600 clamp(2.9rem, 4.1vw, 5.6rem) / 1 "Space Grotesk", sans-serif;
+  font: 600 clamp(2.9rem, 4.1vw, 5.6rem) / 1 "Manrope", sans-serif;
 }
 
 .expertise-row p {
@@ -664,7 +666,7 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 50%;
   color: var(--acid);
-  font: 600 1.15rem "Space Grotesk", sans-serif;
+  font: 600 1.15rem "Manrope", sans-serif;
   transition: color 220ms ease, background 220ms ease, transform 220ms ease;
 }
 
@@ -690,7 +692,7 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 999px;
   color: rgba(255, 255, 255, 0.75);
-  font: 600 1.12rem "Space Grotesk", sans-serif;
+  font: 600 1.12rem "Manrope", sans-serif;
 }
 
 .experience-layout {
@@ -772,13 +774,13 @@ img {
   gap: 16px;
   margin-bottom: 28px;
   color: var(--muted);
-  font: 600 1.12rem "Space Grotesk", sans-serif;
+  font: 600 1.12rem "Manrope", sans-serif;
   text-transform: uppercase;
 }
 
 .timeline h3 {
   max-width: 640px;
-  font: 600 clamp(3.1rem, 4vw, 5.2rem) / 1 "Space Grotesk", sans-serif;
+  font: 600 clamp(3.1rem, 4vw, 5.2rem) / 1 "Manrope", sans-serif;
 }
 
 .timeline article > strong {
@@ -882,13 +884,13 @@ img {
 .project-info > span {
   margin-bottom: 32px;
   color: var(--muted);
-  font: 600 1.1rem "Space Grotesk", sans-serif;
+  font: 600 1.1rem "Manrope", sans-serif;
   text-transform: uppercase;
 }
 
 .project-info h3 {
   max-width: 520px;
-  font: 600 clamp(2.8rem, 3.8vw, 4.8rem) / 1 "Space Grotesk", sans-serif;
+  font: 600 clamp(2.8rem, 3.8vw, 4.8rem) / 1 "Manrope", sans-serif;
 }
 
 .project-info p {
@@ -953,7 +955,7 @@ img {
   border-radius: 4px;
   color: var(--ink);
   background: var(--acid);
-  font: 600 1.12rem "Space Grotesk", sans-serif;
+  font: 600 1.12rem "Manrope", sans-serif;
 }
 
 .education-copy .section-index {
@@ -962,7 +964,7 @@ img {
 
 .education-copy h2 {
   margin: 24px 0;
-  font: 600 clamp(4.8rem, 6vw, 7.8rem) / 0.96 "Space Grotesk", sans-serif;
+  font: 600 clamp(4.8rem, 6vw, 7.8rem) / 0.96 "Manrope", sans-serif;
 }
 
 .education-copy > p {
@@ -986,7 +988,7 @@ img {
 
 .education-copy dt {
   color: rgba(255, 255, 255, 0.6);
-  font: 600 1.12rem "Space Grotesk", sans-serif;
+  font: 600 1.12rem "Manrope", sans-serif;
   text-transform: uppercase;
 }
 
@@ -1006,7 +1008,7 @@ img {
 .contact h2 {
   max-width: 1100px;
   margin: 36px 0 64px;
-  font: 600 clamp(5.4rem, 8.3vw, 11rem) / 0.9 "Space Grotesk", sans-serif;
+  font: 600 clamp(5.4rem, 8.3vw, 11rem) / 0.9 "Manrope", sans-serif;
 }
 
 .contact h2 span {
@@ -1021,7 +1023,7 @@ img {
   gap: 20px;
   padding-block: 24px;
   border-block: 1px solid rgba(255, 255, 255, 0.32);
-  font: 600 clamp(2.4rem, 4.3vw, 5.4rem) "Space Grotesk", sans-serif;
+  font: 600 clamp(2.4rem, 4.3vw, 5.4rem) "Manrope", sans-serif;
 }
 
 .contact-email .arrow {
@@ -1079,7 +1081,7 @@ img {
   justify-content: space-between;
   gap: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
-  font: 600 1.08rem "Space Grotesk", sans-serif;
+  font: 600 1.08rem "Manrope", sans-serif;
   text-transform: uppercase;
 }
 
@@ -1206,7 +1208,7 @@ img {
     min-height: auto;
     padding: 13px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    font: 600 clamp(3.8rem, 8vw, 6rem) "Space Grotesk", sans-serif;
+    font: 600 clamp(3.8rem, 8vw, 6rem) "Manrope", sans-serif;
   }
 
   .navbar a::after {
@@ -1500,5 +1502,528 @@ img {
   .js [data-timeline-item] {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Expanded career, communication, and education chapters */
+.career-status {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 30px;
+  padding: 18px 20px;
+  border: 1px solid var(--ink);
+  border-radius: 5px;
+  background: var(--yellow);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.career-status span {
+  color: var(--muted);
+  font: 600 1.05rem "Manrope", sans-serif;
+  text-transform: uppercase;
+}
+
+.career-status strong {
+  font: 600 1.55rem "Manrope", sans-serif;
+}
+
+.timeline article {
+  min-height: 510px;
+  padding-bottom: 64px;
+}
+
+.timeline .role-summary {
+  max-width: 720px;
+  color: var(--ink-soft);
+  font-size: 1.55rem;
+  font-weight: 600;
+}
+
+.role-details {
+  max-width: 730px;
+  display: grid;
+  gap: 11px;
+  margin-top: 24px;
+  list-style: none;
+}
+
+.role-details li {
+  position: relative;
+  padding-left: 22px;
+  color: var(--muted);
+  font-size: 1.38rem;
+  line-height: 1.6;
+}
+
+.role-details li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 8px;
+  height: 2px;
+  background: var(--coral);
+}
+
+.timeline article.active .role-details li::before {
+  width: 13px;
+  transition: width 260ms ease;
+}
+
+.project-portfolio {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(340px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-rows: none;
+}
+
+.project-portfolio .project-info {
+  min-height: 100%;
+  border-top: 0;
+  border-left: 1px solid var(--ink);
+}
+
+.communication {
+  overflow: hidden;
+}
+
+.communication::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 26vw;
+  height: 12px;
+  background: var(--coral);
+}
+
+.communication-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.65fr);
+  align-items: start;
+  gap: clamp(60px, 9vw, 140px);
+}
+
+.communication-copy > .section-index {
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.communication-copy > h2 {
+  max-width: 820px;
+  margin: 28px 0 34px;
+  font: 600 clamp(5rem, 7.2vw, 9.2rem) / 0.92 "Manrope", sans-serif;
+}
+
+.communication-copy > p {
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 1.62rem;
+  line-height: 1.72;
+}
+
+.communication-principles {
+  margin-top: 68px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.communication-principles article {
+  display: grid;
+  grid-template-columns: 44px minmax(170px, 0.45fr) minmax(0, 1fr);
+  gap: 22px;
+  padding-block: 23px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.communication-principles article > span {
+  color: var(--acid);
+  font: 600 1.08rem "Manrope", sans-serif;
+}
+
+.communication-principles h3 {
+  font: 600 2rem "Manrope", sans-serif;
+}
+
+.communication-principles p {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 1.32rem;
+  line-height: 1.6;
+}
+
+.language-stage {
+  position: sticky;
+  top: 116px;
+  min-height: 610px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--acid);
+  box-shadow: 12px 12px 0 var(--blue);
+  overflow: hidden;
+}
+
+.language-stage > p {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 42px;
+  font: 600 1.1rem "Manrope", sans-serif;
+  text-transform: uppercase;
+}
+
+.language-stage ul {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--ink);
+  list-style: none;
+}
+
+.language-stage li {
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.language-stage li strong {
+  font: 600 2.2rem "Manrope", sans-serif;
+}
+
+.language-stage li span {
+  color: rgba(11, 11, 12, 0.62);
+  font-size: 1.12rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.language-orbit {
+  height: 190px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 42px;
+}
+
+.language-orbit span {
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper-bright);
+  box-shadow: 4px 4px 0 var(--ink);
+  font: 700 1.55rem "Manrope", sans-serif;
+  will-change: transform;
+}
+
+.language-orbit span:nth-child(2) { align-self: start; background: var(--yellow); }
+.language-orbit span:nth-child(3) { align-self: end; background: var(--coral); }
+.language-orbit span:nth-child(4) { background: var(--blue); color: var(--white); }
+
+.location-route {
+  position: absolute;
+  right: 28px;
+  bottom: 24px;
+  left: 28px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  font: 600 1.05rem "Manrope", sans-serif;
+  text-transform: uppercase;
+}
+
+.location-route i {
+  position: relative;
+  height: 1px;
+  background: var(--ink);
+}
+
+.location-route i::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--ink);
+  border-right: 1px solid var(--ink);
+  transform: rotate(45deg);
+}
+
+.education {
+  color: var(--ink);
+  background: #e8ecf5;
+}
+
+.education-journey {
+  display: grid;
+  gap: 34px;
+}
+
+.education-chapter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  min-height: 570px;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper-bright);
+  overflow: hidden;
+  transition: box-shadow 300ms ease, transform 300ms ease;
+}
+
+.education-chapter.active,
+.education-chapter:hover {
+  box-shadow: 12px 12px 0 var(--ink);
+}
+
+.education-chapter .education-image {
+  height: auto;
+  min-height: 100%;
+  max-height: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.education-chapter .education-image img {
+  height: 116%;
+}
+
+.education-chapter .education-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(42px, 6vw, 82px);
+}
+
+.education-chapter .education-copy > h3 {
+  margin: 26px 0 15px;
+  font: 600 clamp(3.6rem, 4.7vw, 6.2rem) / 0.98 "Manrope", sans-serif;
+}
+
+.education-chapter .education-copy > strong {
+  color: var(--blue);
+  font: 600 1.5rem "Manrope", sans-serif;
+}
+
+.education-chapter .education-copy > p {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 1.48rem;
+  line-height: 1.72;
+}
+
+.education-school {
+  grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr);
+  background: var(--yellow);
+}
+
+.education-school .education-image {
+  border-left: 1px solid var(--ink);
+}
+
+.education-college .education-image {
+  border-right: 1px solid var(--ink);
+}
+
+.education-school .education-copy > strong {
+  color: #b23825;
+}
+
+.chapter-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--ink);
+  color: var(--muted);
+  font: 600 1.08rem "Manrope", sans-serif;
+  text-transform: uppercase;
+}
+
+.credentials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.credentials > div {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 24px;
+  border: 1px solid var(--ink);
+  border-radius: 5px;
+  background: var(--blue);
+  color: var(--white);
+}
+
+.credentials > div:last-child {
+  background: var(--coral);
+  color: var(--ink);
+}
+
+.credentials span {
+  color: rgba(255, 255, 255, 0.68);
+  font: 600 1.05rem "Manrope", sans-serif;
+  text-transform: uppercase;
+}
+
+.credentials > div:last-child span {
+  color: rgba(11, 11, 12, 0.6);
+}
+
+.credentials strong {
+  max-width: 480px;
+  font: 600 clamp(2rem, 2.5vw, 3.1rem) / 1.1 "Manrope", sans-serif;
+}
+
+@media (max-width: 1120px) {
+  .communication-layout {
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 54px;
+  }
+
+  .communication-principles article {
+    grid-template-columns: 38px 1fr;
+  }
+
+  .communication-principles p {
+    grid-column: 2;
+  }
+
+  .education-chapter {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 920px) {
+  .timeline article {
+    min-height: 0;
+  }
+
+  .project-portfolio {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .project-portfolio .project-info {
+    min-height: 230px;
+    border-top: 1px solid var(--ink);
+    border-left: 0;
+  }
+
+  .communication-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .language-stage {
+    position: relative;
+    top: auto;
+    min-height: 570px;
+  }
+
+  .education-chapter,
+  .education-school {
+    grid-template-columns: 1fr;
+  }
+
+  .education-chapter .education-image {
+    min-height: 480px;
+    order: 0;
+    border: 0;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .education-chapter .education-copy {
+    order: 1;
+  }
+}
+
+@media (max-width: 660px) {
+  .career-status {
+    margin-bottom: 18px;
+  }
+
+  .timeline .role-summary {
+    font-size: 1.45rem;
+  }
+
+  .role-details li {
+    font-size: 1.32rem;
+  }
+
+  .project-portfolio {
+    grid-column: auto;
+  }
+
+  .communication-copy > h2 {
+    font-size: clamp(4.4rem, 13vw, 6.2rem);
+  }
+
+  .communication-principles article {
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+  }
+
+  .language-stage {
+    min-height: 540px;
+    padding: 20px;
+    box-shadow: 7px 7px 0 var(--blue);
+  }
+
+  .language-orbit {
+    height: 150px;
+  }
+
+  .language-orbit span {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+
+  .language-stage li strong {
+    font-size: 1.8rem;
+  }
+
+  .location-route {
+    right: 20px;
+    left: 20px;
+  }
+
+  .education-chapter .education-image {
+    min-height: 330px;
+  }
+
+  .education-chapter .education-copy {
+    padding: 32px 24px 40px;
+  }
+
+  .education-chapter .education-copy > h3 {
+    font-size: clamp(3.2rem, 10vw, 4.4rem);
+  }
+
+  .chapter-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .credentials {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .education-chapter,
+  .language-orbit span {
+    transform: none !important;
   }
 }

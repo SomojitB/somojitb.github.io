@@ -18,6 +18,16 @@ const expectedFacts = [
   '5,000+ total vulnerabilities',
   '2,000+ high',
   '400+ HashiCorp Sentinel policies',
+  'CloudTrail, CloudWatch, and Aternity',
+  'Cloudflare, Route 53, and Squid',
+  'Carbon Black deployment and configuration',
+  'AWS IAM policies, roles, and MFA controls',
+  'firewalls, load balancers, and VPNs',
+  'severity, exploitability, and business impact',
+  'Asansol Engineering College',
+  'B.Tech in Electronics &amp; Communication Engineering',
+  'DAV Public School / CBSE',
+  '2015 - 2017',
   'Microsoft Azure Fundamentals (AZ-900)',
   'SAFe DevOps Certification',
   'English, Hindi, Bengali, Spanish',
@@ -30,11 +40,18 @@ for (const fact of expectedFacts) {
   assert.ok(html.includes(fact), `Missing verified portfolio fact: ${fact}`);
 }
 
+const requiredSections = ['home', 'impact', 'expertise', 'experience', 'projects', 'communication', 'education', 'contact'];
+for (const sectionId of requiredSections) {
+  assert.match(html, new RegExp(`<section\\b[^>]*\\bid="${sectionId}"`), `Missing section landmark: ${sectionId}`);
+}
+
+assert.equal((html.match(/<h1\b/g) || []).length, 1, 'The page must contain exactly one h1');
+
 const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 assert.equal(new Set(ids).size, ids.length, 'Duplicate HTML id detected');
 
 const imageTags = [...html.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
-assert.ok(imageTags.length >= 5, 'Expected portrait, project, and education imagery');
+assert.ok(imageTags.length >= 7, 'Expected portrait, project, college, and school imagery');
 for (const tag of imageTags) {
   assert.match(tag, /\salt="[^"]+"/, `Image is missing useful alt text: ${tag}`);
 }
@@ -54,9 +71,11 @@ for (const reference of localReferences) {
 }
 
 const motionEngine = await readFile(path.join(repositoryRoot, 'assests/js/motion-engine.js'), 'utf8');
+const interactionLayer = await readFile(path.join(repositoryRoot, 'assests/js/script.js'), 'utf8');
 const bundle = await readFile(path.join(repositoryRoot, 'assests/js/app.bundle.js'), 'utf8');
 assert.ok(motionEngine.includes('anime.js v3.2.2'), 'Pinned Anime.js runtime is missing');
 assert.ok(bundle.includes('anime.js v3.2.2'), 'Browser bundle does not contain Anime.js');
 assert.ok(bundle.includes("setupScrollMotion();"), 'Browser bundle is missing the portfolio interaction layer');
+assert.equal(bundle, `${motionEngine.trimEnd()}\n\n${interactionLayer.trimEnd()}\n`, 'Browser bundle is out of date with its source files');
 
-console.log(`Site smoke checks passed: ${expectedFacts.length} facts, ${imageTags.length} images, ${localReferences.length} local assets.`);
+console.log(`Site smoke checks passed: ${expectedFacts.length} facts, ${requiredSections.length} sections, ${imageTags.length} images, ${localReferences.length} local assets.`);
