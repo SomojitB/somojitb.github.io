@@ -1,14 +1,38 @@
-## Portfolio-Website
-Portfolio website build using HTML5, CSS3, JavaScript and jQuery.
+# Somojit Banerjee Portfolio
 
-<a href="https://somojitb.github.io/" target="_blank">**Visit Now** 🚀</a>
+Personal portfolio for Somojit Banerjee, redesigned as a modern one-page site focused on cloud security architecture, DevSecOps, multi-cloud security, vulnerability management, and policy-as-code.
 
+[Visit the live site](https://somojitb.github.io/)
 
-## 📌 Tech Stack
-[![HTML](https://img.shields.io/badge/html5%20-%23E34F26.svg?&style=for-the-badge&logo=html5&logoColor=white)]
-[![CSS](https://img.shields.io/badge/css3%20-%231572B6.svg?&style=for-the-badge&logo=css3&logoColor=white)]
-[![JS](https://img.shields.io/badge/javascript%20-%23323330.svg?&style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)]
-<img alt="jQuery" src="https://img.shields.io/badge/jquery-%230769AD.svg?style=for-the-badge&logo=jquery&logoColor=white"/>
+## Highlights
 
+- New custom portfolio design replacing the older template base.
+- Anime.js-inspired motion system with staggered title reveal, animated counters, a motion grid, floating signal cards, scroll reveals, and hover interactions.
+- CV-aligned content for current Cloud Security Architect / DevSecOps Engineer positioning.
+- Sections for impact, focus areas, skills, experience, selected projects, credentials, and contact.
+- Legacy `/projects/` and `/experience/` routes redirect into the redesigned homepage sections.
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+## Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript
+- Anime.js
+- Font Awesome
+
+## Local Preview
+
+This is a static GitHub Pages site. Serve the repository root with any static file server, then open the local URL.
+
+```powershell
+python -m http.server 4176 --bind 127.0.0.1
+```
+
+## Verification
+
+The redesign branch was checked with:
+
+- `git diff --check`
+- `node --check assests/js/script.js`
+- HTML parsing for `index.html`, `projects/index.html`, and `experience/index.html`
+- Local HTTP checks for the homepage, redirect routes, CSS, JS, and resume PDF
