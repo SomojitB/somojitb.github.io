@@ -7,10 +7,10 @@ Personal portfolio for Somojit Banerjee, redesigned as a modern one-page site fo
 ## Highlights
 
 - New custom portfolio design replacing the older template base.
-- Anime.js-inspired motion system with staggered title reveal, animated counters, a motion grid, floating signal cards, scroll reveals, and hover interactions.
 - CV-aligned content for current Cloud Security Architect / DevSecOps Engineer positioning.
 - Sections for impact, focus areas, skills, experience, selected projects, credentials, and contact.
 - Legacy `/projects/` and `/experience/` routes redirect into the redesigned homepage sections.
+- Interactive UI built with Anime.js for subtle transitions and responsive visual feedback.
 
 ## Tech Stack
 
