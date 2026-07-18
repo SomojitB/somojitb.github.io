@@ -5,233 +5,274 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="keywords" content="Somojit Banerjee, Cloud Security Architect, DevSecOps Engineer, AWS Security, GCP Security, Azure Security, Terraform, Jenkins, CSPM, Policy as Code">
-  <meta name="description" content="Portfolio of Somojit Banerjee, Cloud Security Architect and DevSecOps Engineer securing enterprise AWS, GCP, and Azure platforms.">
+  <meta name="description" content="Portfolio of Somojit Banerjee, a Cloud Security Architect and DevSecOps Engineer securing enterprise AWS, GCP, and Azure platforms.">
+  <meta name="theme-color" content="#0b0b0c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="./assests/css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link id="favicon" rel="shortcut icon" href="./assests/images/favicon.jpg" type="image/x-png">
+  <link id="favicon" rel="shortcut icon" href="./assests/images/favicon.jpg" type="image/jpeg">
   <title>Somojit Banerjee | Cloud Security Architect</title>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="Somojit Banerjee home">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+  <div class="click-pulse" aria-hidden="true"></div>
+
+  <header class="site-header" data-header>
+    <a class="brand" href="#home" aria-label="Somojit Banerjee home" data-magnetic>
       <span class="brand-mark">SB</span>
-      <span>Somojit Banerjee</span>
+      <span class="brand-name">Somojit Banerjee</span>
     </a>
-    <button class="menu-toggle" id="menu" aria-label="Toggle navigation" aria-expanded="false">
-      <i class="fas fa-bars"></i>
+    <button class="menu-toggle" id="menu" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="primary-navigation">
+      <span></span><span></span>
     </button>
-    <nav class="navbar" aria-label="Primary navigation">
+    <nav class="navbar" id="primary-navigation" aria-label="Primary navigation">
       <a class="active" href="#home">Home</a>
-      <a href="#toolbox">Toolbox</a>
+      <a href="#expertise">Expertise</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
+    <a class="header-cta" href="mailto:somojitb@gmail.com" data-magnetic>Let&apos;s talk <span class="arrow" aria-hidden="true">&nearr;</span></a>
   </header>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow">Cloud Security Architect / DevSecOps Engineer</p>
-        <h1 class="hero-title"><span>Enterprise</span><span>cloud security</span><span>at scale.</span></h1>
-        <p class="hero-summary">I secure enterprise cloud platforms across AWS, GCP, and Azure with hands-on architecture, DevSecOps automation, vulnerability remediation, IAM, WAF, CSPM, Terraform, Jenkins, and policy-as-code.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#experience">View experience <i class="fas fa-arrow-right"></i></a>
-          <a class="button secondary" href="./assests/Resume.pdf" target="_blank" rel="noopener noreferrer">Download resume <i class="fas fa-file-alt"></i></a>
-        </div>
-      </div>
-
-      <div class="hero-lab" aria-label="Cloud security profile">
-        <div class="dot-board" aria-hidden="true"></div>
-        <div class="profile-card">
-          <img src="./assests/images/profile.jpg" alt="Somojit Banerjee">
-          <div>
-            <span>Currently securing</span>
-            <strong>Global Payments</strong>
-            <small>Mexico City, Mexico</small>
+  <main id="main-content">
+    <section class="hero" id="home" data-section>
+      <div class="hero-grid shell">
+        <div class="hero-copy">
+          <div class="hero-kicker" data-hero-item>
+            <span class="availability-dot" aria-hidden="true"></span>
+            Cloud Security Architect / DevSecOps Engineer
+          </div>
+          <h1 class="hero-title" aria-label="I secure the cloud at enterprise scale">
+            <span class="title-line"><span>I secure</span></span>
+            <span class="title-line accent-line"><span>the cloud.</span></span>
+            <span class="title-line"><span>At scale.</span></span>
+          </h1>
+          <div class="hero-bottom" data-hero-item>
+            <p>I design and automate resilient cloud security across AWS, GCP, and Azure, turning policy, identity, application protection, and vulnerability remediation into repeatable engineering systems.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#experience" data-magnetic>Explore my work <span class="arrow" aria-hidden="true">&darr;</span></a>
+              <a class="button button-quiet" href="./assests/Resume.pdf" target="_blank" rel="noopener noreferrer" data-magnetic>Resume <span class="arrow" aria-hidden="true">&nearr;</span></a>
+            </div>
           </div>
         </div>
-        <div class="code-card">
-<pre><code>profile:
-  role: Cloud Security Architect
-  cloud: AWS / GCP / Azure
-  focus: IAM, WAF, CSPM, IaC
-  controls: Sentinel, OPA/Rego, Azure Policy
-  standards: CIS, NIST</code></pre>
+
+        <figure class="hero-portrait" data-hero-visual>
+          <div class="portrait-frame" data-tilt>
+            <img src="./assests/images/profile.jpg" alt="Somojit Banerjee" fetchpriority="high" decoding="async">
+          </div>
+          <figcaption>
+            <span>Based in Mexico City</span>
+            <strong>Securing Global Payments</strong>
+          </figcaption>
+          <div class="orbit-label orbit-label-one" aria-hidden="true">AWS / GCP / Azure</div>
+          <div class="orbit-label orbit-label-two" aria-hidden="true">IAM / WAF / CSPM</div>
+          <div class="signal-grid" aria-hidden="true"></div>
+        </figure>
+      </div>
+      <a class="scroll-cue" href="#impact" aria-label="Scroll to career impact">
+        <span>Scroll to explore</span>
+        <span class="arrow" aria-hidden="true">&darr;</span>
+      </a>
+    </section>
+
+    <div class="capability-marquee" aria-label="Core capabilities">
+      <div class="marquee-track">
+        <div class="marquee-group">
+          <span>AWS Security</span><i></i><span>DevSecOps</span><i></i><span>Policy as Code</span><i></i><span>Cloud Architecture</span><i></i><span>Vulnerability Management</span><i></i>
+        </div>
+        <div class="marquee-group" aria-hidden="true">
+          <span>AWS Security</span><i></i><span>DevSecOps</span><i></i><span>Policy as Code</span><i></i><span>Cloud Architecture</span><i></i><span>Vulnerability Management</span><i></i>
+        </div>
+      </div>
+    </div>
+
+    <section class="impact section-band" id="impact" data-section>
+      <div class="shell">
+        <div class="section-intro" data-reveal>
+          <p class="section-index">01 / Impact</p>
+          <h2>Security outcomes measured in systems strengthened.</h2>
+          <p class="section-copy">From cloud controls to vulnerability closure, I focus on security programs that can prove their impact.</p>
+        </div>
+        <div class="impact-grid">
+          <article class="impact-feature" data-reveal>
+            <strong><span class="count" data-count="5000">5,000</span><sup>+</sup></strong>
+            <p>Total vulnerabilities driven through remediation across enterprise environments.</p>
+          </article>
+          <article data-reveal>
+            <strong><span class="count" data-count="5">5</span><sup>+</sup></strong>
+            <p>Years across cloud security and DevSecOps.</p>
+          </article>
+          <article data-reveal>
+            <strong><span class="count" data-count="2000">2,000</span><sup>+</sup></strong>
+            <p>High-risk vulnerabilities remediated.</p>
+          </article>
+          <article data-reveal>
+            <strong><span class="count" data-count="400">400</span><sup>+</sup></strong>
+            <p>Policy-as-code controls created.</p>
+          </article>
+          <article data-reveal>
+            <strong><span class="count" data-count="20">20</span><sup>+</sup></strong>
+            <p>Custom AWS WAF rules designed.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="stats" aria-label="Career impact">
-      <article>
-        <strong class="count" data-count="5">5</strong>
-        <span>+ years cloud security and DevSecOps</span>
-      </article>
-      <article>
-        <strong class="count" data-count="5000">5,000</strong>
-        <span>+ total vulnerabilities driven through remediation</span>
-      </article>
-      <article>
-        <strong class="count" data-count="2000">2,000</strong>
-        <span>+ high-risk vulnerabilities remediated</span>
-      </article>
-      <article>
-        <strong class="count" data-count="400">400</strong>
-        <span>+ policy-as-code controls created</span>
-      </article>
-      <article>
-        <strong class="count" data-count="20">20</strong>
-        <span>+ AWS WAF rules designed</span>
-      </article>
-    </section>
+    <section class="expertise section-band section-dark" id="expertise" data-section>
+      <div class="shell">
+        <div class="section-intro light" data-reveal>
+          <p class="section-index">02 / Expertise</p>
+          <h2>Architecture meets hands-on engineering.</h2>
+          <p class="section-copy">I work across strategy, controls, automation, and remediation, with enough depth to carry security from design review into production.</p>
+        </div>
 
-    <section class="section" id="toolbox">
-      <div class="section-head">
-        <p class="eyebrow">Core Security Practice</p>
-        <h2>Architecture, pipelines, policies, and remediation in one operating model.</h2>
-      </div>
-      <div class="tool-grid">
-        <article>
-          <i class="fas fa-cloud"></i>
-          <h3>Cloud Security</h3>
-          <p>AWS security, Azure security, GCP security, IAM, WAF, zero trust, CloudTrail, CloudWatch, Cloudflare, Route 53, and secure migration patterns.</p>
-        </article>
-        <article>
-          <i class="fas fa-code-branch"></i>
-          <h3>DevSecOps</h3>
-          <p>Jenkins shared libraries, CI/CD security controls, secure SDLC, Docker, GKE, Apigee, Google App Engine, Python, and Bash automation.</p>
-        </article>
-        <article>
-          <i class="fas fa-balance-scale"></i>
-          <h3>Policy-as-Code</h3>
-          <p>Terraform, HashiCorp Sentinel, Azure Policy, OPA/Rego, Bridgecrew, CIS benchmarks, NIST alignment, and scalable compliance guardrails.</p>
-        </article>
-        <article>
-          <i class="fas fa-search"></i>
-          <h3>Vulnerability Management</h3>
-          <p>Wiz, Prisma Cloud, Rapid7, Tenable.io, Burp Suite, OWASP ZAP, Nmap, CVE reporting, and risk-based prioritization.</p>
-        </article>
-      </div>
-      <div class="skill-strip" aria-label="Skills">
-        <span>AWS</span><span>GCP</span><span>Azure</span><span>Terraform</span><span>Jenkins</span><span>Wiz</span><span>Prisma Cloud</span><span>OPA/Rego</span><span>Sentinel</span><span>Docker</span><span>GKE</span><span>Python</span><span>Bash</span><span>Cloudflare</span>
+        <div class="expertise-list">
+          <article class="expertise-row" data-reveal data-spotlight>
+            <span class="row-number">01</span>
+            <div><h3>Cloud Security Architecture</h3><p>Secure migration patterns, IAM, zero trust, WAF, CloudTrail, CloudWatch, Route 53, Cloudflare, and architecture across AWS, Azure, and GCP.</p></div>
+            <span class="expertise-icon" aria-hidden="true">CS</span>
+          </article>
+          <article class="expertise-row" data-reveal data-spotlight>
+            <span class="row-number">02</span>
+            <div><h3>DevSecOps Engineering</h3><p>Jenkins shared libraries, CI/CD security controls, secure SDLC, Docker, GKE, Apigee, Google App Engine, Python, and Bash automation.</p></div>
+            <span class="expertise-icon" aria-hidden="true">DS</span>
+          </article>
+          <article class="expertise-row" data-reveal data-spotlight>
+            <span class="row-number">03</span>
+            <div><h3>Policy &amp; Cloud Governance</h3><p>Terraform, HashiCorp Sentinel, Azure Policy, OPA/Rego, Bridgecrew, CIS benchmarks, NIST alignment, and scalable compliance guardrails.</p></div>
+            <span class="expertise-icon" aria-hidden="true">PC</span>
+          </article>
+          <article class="expertise-row" data-reveal data-spotlight>
+            <span class="row-number">04</span>
+            <div><h3>Vulnerability Management</h3><p>Wiz, Prisma Cloud, Rapid7, Tenable.io, Burp Suite, OWASP ZAP, Nmap, CVE reporting, and risk-based prioritization.</p></div>
+            <span class="expertise-icon" aria-hidden="true">VM</span>
+          </article>
+        </div>
+
+        <div class="tool-cloud" aria-label="Technology toolbox" data-reveal>
+          <span>AWS</span><span>GCP</span><span>Azure</span><span>Terraform</span><span>Jenkins</span><span>Wiz</span><span>Prisma Cloud</span><span>OPA/Rego</span><span>Sentinel</span><span>Docker</span><span>GKE</span><span>Python</span><span>Bash</span><span>Cloudflare</span>
+        </div>
       </div>
     </section>
 
-    <section class="section experience" id="experience">
-      <div class="section-head">
-        <p class="eyebrow">Professional Experience</p>
-        <h2>Cloud security and DevSecOps experience across enterprise environments.</h2>
-      </div>
-      <div class="timeline">
-        <article>
-          <time>Mar 2025 - Present</time>
-          <div>
+    <section class="experience section-band" id="experience" data-section>
+      <div class="shell experience-layout">
+        <div class="experience-sticky">
+          <div class="section-intro" data-reveal>
+            <p class="section-index">03 / Experience</p>
+            <h2>Built in production, not just on paper.</h2>
+            <p class="section-copy">A career moving from vulnerability management into multi-cloud architecture, with automation connecting every step.</p>
+          </div>
+          <div class="timeline-meter" aria-hidden="true"><span></span></div>
+        </div>
+
+        <div class="timeline">
+          <article data-timeline-item>
+            <div class="timeline-meta"><time>Mar 2025 - Present</time><span>Mexico City</span></div>
             <h3>Cloud Security Architect</h3>
-            <strong>Global Payments / Mexico City</strong>
+            <strong>Global Payments</strong>
             <p>Leading AWS payment gateway security architecture, secure migration patterns, IAM controls, WAF protections with 20+ custom rules, compliance evidence, and remediation of 500+ critical, 2,000+ high, and 5,000+ total vulnerabilities.</p>
-          </div>
-        </article>
-        <article>
-          <time>May 2024 - Feb 2025</time>
-          <div>
+            <div class="role-tags"><span>AWS</span><span>WAF</span><span>IAM</span><span>CSPM</span></div>
+          </article>
+          <article data-timeline-item>
+            <div class="timeline-meta"><time>May 2024 - Feb 2025</time><span>Mexico City</span></div>
             <h3>Senior DevOps Engineer</h3>
-            <strong>Global Payments / Mexico City</strong>
+            <strong>Global Payments</strong>
             <p>Built Jenkins shared libraries and CI/CD pipelines for Apigee, Google App Engine, and GKE while integrating Wiz, Prisma Cloud, cloud security controls, and Carbon Black automation.</p>
-          </div>
-        </article>
-        <article>
-          <time>Aug 2023 - May 2024</time>
-          <div>
+            <div class="role-tags"><span>Jenkins</span><span>GKE</span><span>Wiz</span><span>Prisma Cloud</span></div>
+          </article>
+          <article data-timeline-item>
+            <div class="timeline-meta"><time>Aug 2023 - May 2024</time><span>Queretaro</span></div>
             <h3>DevOps Engineer</h3>
-            <strong>Tata Consultancy Services / Queretaro</strong>
+            <strong>Tata Consultancy Services</strong>
             <p>Automated build, test, infrastructure, and deployment workflows using Jenkins, Terraform, Docker, AWS IAM, and multi-cloud operations across AWS, GCP, and Azure.</p>
-          </div>
-        </article>
-        <article>
-          <time>Sep 2022 - Jul 2023</time>
-          <div>
+            <div class="role-tags"><span>Terraform</span><span>Docker</span><span>CI/CD</span></div>
+          </article>
+          <article data-timeline-item>
+            <div class="timeline-meta"><time>Sep 2022 - Jul 2023</time><span>Queretaro</span></div>
             <h3>Cloud Security Engineer</h3>
-            <strong>Tata Consultancy Services / Queretaro</strong>
+            <strong>Tata Consultancy Services</strong>
             <p>Created 400+ HashiCorp Sentinel policies and cloud guardrails with Terraform, Azure Policy, Bridgecrew, OPA/Rego, CSPM practices, CIS benchmarks, and cloud governance requirements.</p>
-          </div>
-        </article>
-        <article>
-          <time>Mar 2021 - Jul 2022</time>
-          <div>
+            <div class="role-tags"><span>Sentinel</span><span>OPA/Rego</span><span>Azure Policy</span></div>
+          </article>
+          <article data-timeline-item>
+            <div class="timeline-meta"><time>Mar 2021 - Jul 2022</time><span>Bangalore</span></div>
             <h3>Vulnerability Management SME</h3>
-            <strong>Tata Consultancy Services / Bangalore</strong>
+            <strong>Tata Consultancy Services</strong>
             <p>Used Rapid7, Tenable.io, Burp Suite, OWASP ZAP, and Nmap to identify, prioritize, report, and remediate application and infrastructure vulnerabilities.</p>
-          </div>
-        </article>
+            <div class="role-tags"><span>Rapid7</span><span>Tenable</span><span>Burp Suite</span></div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="projects">
-      <div class="section-head">
-        <p class="eyebrow">Selected Projects</p>
-        <h2>Earlier engineering projects and portfolio work.</h2>
-      </div>
-      <div class="project-grid">
-        <article>
-          <img src="./assests/images/projects/mlpr.jpeg" alt="Age and Gender Prediction Model project preview">
-          <div>
-            <h3>Age and Gender Prediction Model</h3>
-            <p>Python and OpenCV model for age and gender classification using CNN-based computer vision techniques.</p>
-            <a href="https://github.com/SomojitB/ageandgender" target="_blank" rel="noopener noreferrer">View project <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </article>
-        <article>
-          <img src="./assests/images/projects/breast-cancer-detection.png" alt="Breast Cancer Detection project preview">
-          <div>
-            <h3>Breast Cancer Detection</h3>
-            <p>Python machine learning project that predicts whether a breast cancer diagnosis is malignant or benign.</p>
-            <a href="https://github.com/SomojitB/Breast-Cancer-Detection" target="_blank" rel="noopener noreferrer">View project <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </article>
-        <article>
-          <img src="./assests/images/projects/covid-19-visualisation.png" alt="Covid-19 Visualisation project preview">
-          <div>
-            <h3>Covid-19 Visualisation</h3>
-            <p>Python visualization project for tracking active, recovered, and fatal COVID-19 cases.</p>
-            <a href="https://github.com/SomojitB/Covid-19-Visualisation" target="_blank" rel="noopener noreferrer">View project <i class="fas fa-arrow-right"></i></a>
-          </div>
-        </article>
+    <section class="projects section-band" id="projects" data-section>
+      <div class="shell">
+        <div class="section-intro" data-reveal>
+          <p class="section-index">04 / Selected work</p>
+          <h2>Earlier builds that shaped how I solve problems.</h2>
+          <p class="section-copy">Computer vision, predictive modelling, and data visualization projects from my engineering journey.</p>
+        </div>
+
+        <div class="project-list">
+          <a class="project-card project-wide" href="https://github.com/SomojitB/ageandgender" target="_blank" rel="noopener noreferrer" data-reveal data-project-card>
+            <div class="project-image"><img src="./assests/images/projects/mlpr.jpeg" alt="Facial analysis interface for the age and gender prediction project" loading="lazy" decoding="async" data-scroll-image></div>
+            <div class="project-info"><span>Computer Vision / Python</span><h3>Age and Gender Prediction Model</h3><p>CNN-based age and gender classification using Python and OpenCV.</p><span class="project-arrow" aria-hidden="true">&nearr;</span></div>
+          </a>
+          <a class="project-card" href="https://github.com/SomojitB/Breast-Cancer-Detection" target="_blank" rel="noopener noreferrer" data-reveal data-project-card>
+            <div class="project-image project-image-contain"><img src="./assests/images/projects/breast-cancer-detection.png" alt="Breast cancer prediction application across desktop and mobile" loading="lazy" decoding="async" data-scroll-image></div>
+            <div class="project-info"><span>Machine Learning / Python</span><h3>Breast Cancer Detection</h3><p>Predictive classification of malignant and benign diagnoses.</p><span class="project-arrow" aria-hidden="true">&nearr;</span></div>
+          </a>
+          <a class="project-card" href="https://github.com/SomojitB/Covid-19-Visualisation" target="_blank" rel="noopener noreferrer" data-reveal data-project-card>
+            <div class="project-image"><img src="./assests/images/projects/covid-19-visualisation.png" alt="Global COVID-19 data visualization map" loading="lazy" decoding="async" data-scroll-image></div>
+            <div class="project-info"><span>Data Visualization / Python</span><h3>COVID-19 Visualisation</h3><p>Global tracking of active, recovered, and fatal case data.</p><span class="project-arrow" aria-hidden="true">&nearr;</span></div>
+          </a>
+        </div>
       </div>
     </section>
 
-    <section class="section credentials">
-      <div class="section-head">
-        <p class="eyebrow">Credentials</p>
-        <h2>Certifications, education, and languages.</h2>
-      </div>
-      <div class="credential-card">
-        <p><strong>Certifications</strong> Microsoft Azure Fundamentals (AZ-900), SAFe DevOps Certification</p>
-        <p><strong>Education</strong> B.Tech, Electronics and Communication Engineering, Asansol Engineering College</p>
-        <p><strong>Languages</strong> English, Hindi, Bengali, Spanish</p>
+    <section class="education section-band section-blue" data-section>
+      <div class="shell education-layout">
+        <div class="education-image" data-reveal>
+          <img src="./assests/images/educat/college.jpg" alt="Asansol Engineering College campus" loading="lazy" decoding="async" data-scroll-image>
+          <span>Asansol, India</span>
+        </div>
+        <div class="education-copy" data-reveal>
+          <p class="section-index">05 / Foundation</p>
+          <h2>Engineering first. Security always.</h2>
+          <p>I earned my B.Tech in Electronics and Communication Engineering at Asansol Engineering College, building the technical foundation behind my systems approach to cloud security.</p>
+          <dl>
+            <div><dt>Certifications</dt><dd>Microsoft Azure Fundamentals (AZ-900)<br>SAFe DevOps Certification</dd></div>
+            <div><dt>Languages</dt><dd>English, Hindi, Bengali, Spanish</dd></div>
+          </dl>
+        </div>
       </div>
     </section>
 
-    <section class="contact" id="contact">
-      <div>
-        <p class="eyebrow">Contact</p>
-        <h2>Let's build cloud systems that are secure, observable, and repeatable.</h2>
-      </div>
-      <div class="contact-list">
-        <a href="mailto:somojitb@gmail.com"><i class="fas fa-envelope"></i> somojitb@gmail.com</a>
-        <a href="tel:+524462925594"><i class="fas fa-phone"></i> +52 446 292 5594</a>
-        <a href="tel:+917908561292"><i class="fas fa-phone"></i> +91 7908561292</a>
-        <a href="https://www.linkedin.com/in/somojit-banerjee-01/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="https://github.com/SomojitB" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+    <section class="contact section-dark" id="contact" data-section>
+      <div class="shell contact-inner">
+        <p class="section-index" data-reveal>06 / Contact</p>
+        <h2 data-reveal>Let&apos;s make cloud security <span>an engineering advantage.</span></h2>
+        <a class="contact-email" href="mailto:somojitb@gmail.com" data-reveal data-magnetic>somojitb@gmail.com <span class="arrow" aria-hidden="true">&nearr;</span></a>
+        <div class="contact-footer" data-reveal>
+          <div class="contact-links">
+            <a href="https://www.linkedin.com/in/somojit-banerjee-01/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="arrow" aria-hidden="true">&nearr;</span></a>
+            <a href="https://github.com/SomojitB" target="_blank" rel="noopener noreferrer">GitHub <span class="arrow" aria-hidden="true">&nearr;</span></a>
+            <a href="tel:+524462925594">Mexico +52 446 292 5594</a>
+            <a href="tel:+917908561292">India +91 7908561292</a>
+          </div>
+          <a class="back-top" href="#home" aria-label="Back to top" data-magnetic><span class="arrow" aria-hidden="true">&uarr;</span></a>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <span>Somojit Banerjee</span>
-    <a href="#home" aria-label="Back to top"><i class="fas fa-arrow-up"></i></a>
+  <footer class="site-footer">
+    <div class="shell"><span>Somojit Banerjee</span><span>Cloud Security / DevSecOps</span><span id="current-year">2026</span></div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="./assests/js/script.js"></script>
+  <script src="./assests/js/app.bundle.js"></script>
 </body>
 </html>

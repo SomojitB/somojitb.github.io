@@ -1,24 +1,26 @@
 # Somojit Banerjee Portfolio
 
-Personal portfolio for Somojit Banerjee, redesigned as a modern one-page site focused on cloud security architecture, DevSecOps, multi-cloud security, vulnerability management, and policy-as-code.
+Personal portfolio for Somojit Banerjee, focused on cloud security architecture, DevSecOps, multi-cloud security, vulnerability management, and policy-as-code.
 
 [Visit the live site](https://somojitb.github.io/)
 
 ## Highlights
 
-- New custom portfolio design replacing the older template base.
-- CV-aligned content for current Cloud Security Architect / DevSecOps Engineer positioning.
-- Sections for impact, focus areas, skills, experience, selected projects, credentials, and contact.
-- Legacy `/projects/` and `/experience/` routes redirect into the redesigned homepage sections.
-- Interactive UI built with Anime.js for subtle transitions and responsive visual feedback.
+- Portrait-led responsive design with a kinetic editorial layout.
+- Resume-aligned roles, dates, employers, impact metrics, tools, education, certifications, languages, projects, and contact details.
+- Locally bundled Anime.js runtime for reliable entrance sequences, scroll reveals, counters, marquees, image parallax, timeline focus, magnetic controls, and click feedback.
+- Responsive desktop and mobile navigation with reduced-motion support.
+- Project and education imagery loaded progressively with descriptive alternative text.
+- Legacy `/projects/` and `/experience/` routes redirect into the main portfolio sections.
 
 ## Tech Stack
 
 - HTML5
 - CSS3
 - JavaScript
-- Anime.js
-- Font Awesome
+- Anime.js 3.2.2
+- GitHub Pages
+- GitHub Actions
 
 ## Local Preview
 
@@ -30,9 +32,10 @@ python -m http.server 4176 --bind 127.0.0.1
 
 ## Verification
 
-The redesign branch was checked with:
+Run the automated syntax, content, local asset, link, image, and fact-preservation checks with:
 
-- `git diff --check`
-- `node --check assests/js/script.js`
-- HTML parsing for `index.html`, `projects/index.html`, and `experience/index.html`
-- Local HTTP checks for the homepage, redirect routes, CSS, JS, and resume PDF
+```powershell
+npm test
+```
+
+The `Portfolio quality` GitHub Actions workflow runs the same checks on pushes to `main` and `polish-redesign-codex`, and on pull requests targeting `main`.
