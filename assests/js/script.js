@@ -1,233 +1,228 @@
-$(document).ready(function(){
-
-    $('#menu').click(function(){
-        $(this).toggleClass('fa-times');
-        $('.navbar').toggleClass('nav-toggle');
-    });
-
-    $(window).on('scroll load',function(){
-        $('#menu').removeClass('fa-times');
-        $('.navbar').removeClass('nav-toggle');
-
-        if(window.scrollY>60){
-            document.querySelector('#scroll-top').classList.add('active');
-        }else{
-            document.querySelector('#scroll-top').classList.remove('active');
-        }
-
-        // scroll spy
-        $('section').each(function(){
-            let height = $(this).height();
-            let offset = $(this).offset().top - 200;
-            let top = $(window).scrollTop();
-            let id = $(this).attr('id');
-
-            if(top>offset && top<offset+height){
-                $('.navbar ul li a').removeClass('active');
-                $('.navbar').find(`[href="#${id}"]`).addClass('active');
-            }
-        });
-    });
-
-    // smooth scrolling
-    $('a[href*="#"]').on('click',function(e){
-        e.preventDefault();
-        $('html, body').animate({
-            scrollTop : $($(this).attr('href')).offset().top,
-        },500, 'linear')
-    })
-});
-
-document.addEventListener('visibilitychange',
-function(){
-    if(document.visibilityState === "visible"){
-        document.title = "Portfolio | Somojit Banerjee";
-        $("#favicon").attr("href","assests/images/favicon.jpg");
-    }
-    else {
-        document.title = "Come Back To Portfolio";
-        $("#favicon").attr("href","assests/images/favhand.png");
-    }
-});
-
-
-// <!-- typed js effect starts -->
-    var typed = new Typed(".typing-text", {
-        strings: ["cloud security architecture", "DevSecOps automation", "multi-cloud security", "policy-as-code", "vulnerability management"],
-        loop: true,
-        typeSpeed: 50,
-		backSpeed: 25,
-		backDelay: 500,
-      });
-// <!-- typed js effect ends -->
-
-// <!-- anime.js dynamic motion starts -->
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasAnime = typeof anime !== 'undefined';
 
-function runPortfolioAnimations() {
-    if (prefersReducedMotion || typeof anime === 'undefined') {
-        document.querySelectorAll('.count').forEach((item) => {
-            item.textContent = item.dataset.count;
-        });
-        return;
+const qs = (selector, root = document) => root.querySelector(selector);
+const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+function buildMotionGrid() {
+  const grid = qs('.motion-grid');
+  if (!grid) return;
+
+  grid.innerHTML = Array.from({ length: 117 }, (_, index) => `<span class="motion-dot" style="--i:${index}"></span>`).join('');
+}
+
+function splitHeroTitle() {
+  const title = qs('.split-title');
+  if (!title) return;
+
+  const text = title.textContent.trim();
+  title.setAttribute('aria-label', text);
+  title.innerHTML = text
+    .split('')
+    .map((char) => char === ' ' ? '<span class="char">&nbsp;</span>' : `<span class="char">${char}</span>`)
+    .join('');
+}
+
+function setActiveNav() {
+  const sections = qsa('main section[id]');
+  const navLinks = qsa('.navbar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach((link) => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+      });
+    });
+  }, { threshold: 0.35 });
+
+  sections.forEach((section) => observer.observe(section));
+}
+
+function animateCounters() {
+  qsa('.count').forEach((counter) => {
+    const target = Number(counter.dataset.count || 0);
+
+    if (!hasAnime || prefersReducedMotion) {
+      counter.textContent = target.toLocaleString();
+      return;
     }
 
-    anime.timeline({ easing: 'easeOutExpo' })
-        .add({
-            targets: 'header',
-            translateY: [-40, 0],
-            opacity: [0, 1],
-            duration: 700
-        })
-        .add({
-            targets: '.home .content h3, .home .content p, .hero-summary, .hero-actions, .social-icons li',
-            translateY: [35, 0],
-            opacity: [0, 1],
-            delay: anime.stagger(90),
-            duration: 900
-        }, '-=350')
-        .add({
-            targets: '.home .image img',
-            scale: [.86, 1],
-            rotate: [-4, 0],
-            opacity: [0, 1],
-            duration: 900
-        }, '-=700');
-
+    const value = { amount: 0 };
     anime({
-        targets: '.hero-stats div',
-        translateY: [24, 0],
+      targets: value,
+      amount: target,
+      round: 1,
+      duration: 1800,
+      easing: 'easeOutExpo',
+      update: () => {
+        counter.textContent = value.amount.toLocaleString();
+      }
+    });
+  });
+}
+
+function revealOnScroll() {
+  const groups = [
+    '.reveal-section',
+    '.metric',
+    '.focus-grid article',
+    '.skill-cloud span',
+    '.timeline article',
+    '.project-grid article'
+  ];
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      if (!hasAnime || prefersReducedMotion) {
+        entry.target.style.opacity = 1;
+        return;
+      }
+
+      anime({
+        targets: entry.target,
         opacity: [0, 1],
-        delay: anime.stagger(140, { start: 500 }),
-        duration: 850,
+        translateY: [28, 0],
+        rotate: [1.5, 0],
+        duration: 760,
         easing: 'easeOutCubic'
-    });
-
-    document.querySelectorAll('.count').forEach((item) => {
-        const target = Number(item.dataset.count || 0);
-        anime({
-            targets: item,
-            innerHTML: [0, target],
-            round: 1,
-            delay: 650,
-            duration: 1600,
-            easing: 'easeOutExpo'
-        });
-    });
-
-    anime({
-        targets: '.about-tags span',
-        scale: [.92, 1],
-        opacity: [0, 1],
-        delay: anime.stagger(70, { start: 250 }),
-        duration: 600,
-        easing: 'easeOutBack'
-    });
-
-    document.querySelectorAll('.work .box, .experience .content, .skills .bar').forEach((card) => {
-        card.addEventListener('mouseenter', () => {
-            anime.remove(card);
-            anime({
-                targets: card,
-                translateY: -6,
-                duration: 260,
-                easing: 'easeOutQuad'
-            });
-        });
-        card.addEventListener('mouseleave', () => {
-            anime.remove(card);
-            anime({
-                targets: card,
-                translateY: 0,
-                duration: 320,
-                easing: 'easeOutQuad'
-            });
-        });
-    });
-}
-
-window.addEventListener('load', runPortfolioAnimations);
-// <!-- anime.js dynamic motion ends -->
-
-// <!-- tilt js effect starts -->
-      VanillaTilt.init(document.querySelectorAll(".tilt"), {
-        max: 15,
       });
-// <!-- tilt js effect ends -->
 
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
 
-// pre loader start
-function loader(){
-    document.querySelector('.loader-container').classList.add('fade-out');
+  groups.flatMap((selector) => qsa(selector)).forEach((item) => observer.observe(item));
 }
-function fadeOut(){
-    setTimeout(loader,500);
+
+function runHeroAnimation() {
+  if (!hasAnime || prefersReducedMotion) {
+    qsa('.reveal-section, .metric, .focus-grid article, .timeline article, .project-grid article, .skill-cloud span').forEach((item) => {
+      item.style.opacity = 1;
+    });
+    qs('.loader-container')?.classList.add('fade-out');
+    animateCounters();
+    return;
+  }
+
+  anime.timeline({ easing: 'easeOutExpo' })
+    .add({
+      targets: '.loader-mark span',
+      translateY: [-18, 0],
+      scale: [0.6, 1],
+      opacity: [0, 1],
+      delay: anime.stagger(120),
+      duration: 600
+    })
+    .add({
+      targets: '.loader-container',
+      translateY: ['0%', '-100%'],
+      opacity: [1, 0],
+      duration: 700
+    }, '+=250')
+    .add({
+      targets: '.site-header',
+      translateY: [-24, 0],
+      opacity: [0, 1],
+      duration: 700
+    }, '-=350')
+    .add({
+      targets: '.eyebrow, .char, .hero-summary, .hero-actions .btn',
+      translateY: [42, 0],
+      rotate: [6, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(22),
+      duration: 900
+    }, '-=400')
+    .add({
+      targets: '.motion-dot',
+      scale: anime.stagger([0.45, 1.1], { grid: [13, 9], from: 'center' }),
+      backgroundColor: anime.stagger(['#0e7c73', '#ec5b4f', '#ffb000', '#3157d5'], { grid: [13, 9], from: 'center' }),
+      delay: anime.stagger(12, { grid: [13, 9], from: 'center' }),
+      duration: 900
+    }, '-=900')
+    .add({
+      targets: '.profile-panel, .signal-card, .pipeline-strip',
+      translateY: [36, 0],
+      scale: [0.94, 1],
+      opacity: [0, 1],
+      delay: anime.stagger(130),
+      duration: 850
+    }, '-=700')
+    .finished.then(animateCounters);
+
+  anime({
+    targets: '.motion-dot',
+    scale: [
+      { value: 1.18, duration: 900 },
+      { value: 0.62, duration: 900 }
+    ],
+    delay: anime.stagger(26, { grid: [13, 9], from: 'center' }),
+    easing: 'easeInOutSine',
+    loop: true,
+    direction: 'alternate'
+  });
+
+  anime({
+    targets: '.signal-card',
+    translateY: [-8, 8],
+    rotate: [-1, 1],
+    duration: 2600,
+    direction: 'alternate',
+    loop: true,
+    easing: 'easeInOutSine',
+    delay: anime.stagger(300)
+  });
 }
-window.onload = fadeOut;
-// pre loader end
 
-// Start of Tawk.to Live Chat
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/60f70460649e0a0a5ccd22a7/1fb2ei71o';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
-// End of Tawk.to Live Chat
+function bindInteractions() {
+  const menu = qs('#menu');
+  const navbar = qs('.navbar');
 
+  menu?.addEventListener('click', () => {
+    const isOpen = navbar.classList.toggle('open');
+    menu.setAttribute('aria-expanded', String(isOpen));
+  });
 
+  qsa('.navbar a').forEach((link) => {
+    link.addEventListener('click', () => {
+      navbar.classList.remove('open');
+      menu?.setAttribute('aria-expanded', 'false');
+    });
+  });
 
-/* ===== SCROLL REVEAL ANIMATION ===== */
-const srtop = ScrollReveal({
-    origin: 'top',
-    distance: '80px',
-    duration: 1000,
-    reset: true
+  if (!hasAnime || prefersReducedMotion) return;
+
+  qsa('.focus-grid article, .timeline article, .project-grid article, .contact-link, .btn').forEach((item) => {
+    item.addEventListener('mouseenter', () => {
+      anime.remove(item);
+      anime({ targets: item, translateY: -6, duration: 260, easing: 'easeOutQuad' });
+    });
+
+    item.addEventListener('mouseleave', () => {
+      anime.remove(item);
+      anime({ targets: item, translateY: 0, duration: 320, easing: 'easeOutQuad' });
+    });
+  });
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    document.title = 'Somojit Banerjee | Cloud Security Architect';
+    qs('#favicon')?.setAttribute('href', './assests/images/favicon.jpg');
+  } else {
+    document.title = 'Come Back To Portfolio';
+    qs('#favicon')?.setAttribute('href', './assests/images/favhand.png');
+  }
 });
 
-/* SCROLL HOME */
-srtop.reveal('.home .content h3',{delay: 200}); 
-srtop.reveal('.home .content p',{delay: 200}); 
-srtop.reveal('.home .hero-summary',{delay: 250});
-srtop.reveal('.home .hero-stats div',{interval: 120});
-srtop.reveal('.home .content .btn',{delay: 200}); 
-
-srtop.reveal('.home .image',{delay: 400}); 
-srtop.reveal('.home .linkedin',{interval: 600}); 
-srtop.reveal('.home .github',{interval: 800}); 
-srtop.reveal('.home .twitter',{interval: 1000});
-srtop.reveal('.home .telegram',{interval: 600}); 
-srtop.reveal('.home .instagram',{interval: 600}); 
-srtop.reveal('.home .dev',{interval: 600}); 
-
-
-
-/* SCROLL ABOUT */
-srtop.reveal('.about .content h3',{delay: 300});
-srtop.reveal('.about .content .tag',{delay: 400}); 
-srtop.reveal('.about .content p',{delay: 300}); 
-srtop.reveal('.about .content .box-container',{delay: 300}); 
-srtop.reveal('.about .content .about-tags span',{interval: 100});
-srtop.reveal('.about .content .resumebtn',{delay: 300}); 
-
-
-/* SCROLL SKILLS */
-srtop.reveal('.skills .container',{interval: 200}); 
-srtop.reveal('.skills .container .bar',{delay: 400}); 
-
-/* SCROLL EDUCATION */
-srtop.reveal('.education .box',{interval: 200}); 
-
-/* SCROLL PROJECTS */
-srtop.reveal('.work .box',{interval: 200}); 
-
-/* SCROLL EXPERIENCE */
-srtop.reveal('.experience .timeline',{delay: 400});
-srtop.reveal('.experience .timeline .container',{interval: 400}); 
-
-/* SCROLL CONTACT */
-srtop.reveal('.contact .container',{delay: 400});
-srtop.reveal('.contact .container .form-group',{delay: 400});
+window.addEventListener('load', () => {
+  buildMotionGrid();
+  splitHeroTitle();
+  bindInteractions();
+  setActiveNav();
+  revealOnScroll();
+  runHeroAnimation();
+});
