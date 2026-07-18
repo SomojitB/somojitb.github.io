@@ -53,13 +53,101 @@ function(){
 
 // <!-- typed js effect starts -->
     var typed = new Typed(".typing-text", {
-        strings: ["front end development", "Data Science", "Cyber Security", "Machine Learning"],
+        strings: ["cloud security architecture", "DevSecOps automation", "multi-cloud security", "policy-as-code", "vulnerability management"],
         loop: true,
         typeSpeed: 50,
 		backSpeed: 25,
 		backDelay: 500,
       });
 // <!-- typed js effect ends -->
+
+// <!-- anime.js dynamic motion starts -->
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function runPortfolioAnimations() {
+    if (prefersReducedMotion || typeof anime === 'undefined') {
+        document.querySelectorAll('.count').forEach((item) => {
+            item.textContent = item.dataset.count;
+        });
+        return;
+    }
+
+    anime.timeline({ easing: 'easeOutExpo' })
+        .add({
+            targets: 'header',
+            translateY: [-40, 0],
+            opacity: [0, 1],
+            duration: 700
+        })
+        .add({
+            targets: '.home .content h3, .home .content p, .hero-summary, .hero-actions, .social-icons li',
+            translateY: [35, 0],
+            opacity: [0, 1],
+            delay: anime.stagger(90),
+            duration: 900
+        }, '-=350')
+        .add({
+            targets: '.home .image img',
+            scale: [.86, 1],
+            rotate: [-4, 0],
+            opacity: [0, 1],
+            duration: 900
+        }, '-=700');
+
+    anime({
+        targets: '.hero-stats div',
+        translateY: [24, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(140, { start: 500 }),
+        duration: 850,
+        easing: 'easeOutCubic'
+    });
+
+    document.querySelectorAll('.count').forEach((item) => {
+        const target = Number(item.dataset.count || 0);
+        anime({
+            targets: item,
+            innerHTML: [0, target],
+            round: 1,
+            delay: 650,
+            duration: 1600,
+            easing: 'easeOutExpo'
+        });
+    });
+
+    anime({
+        targets: '.about-tags span',
+        scale: [.92, 1],
+        opacity: [0, 1],
+        delay: anime.stagger(70, { start: 250 }),
+        duration: 600,
+        easing: 'easeOutBack'
+    });
+
+    document.querySelectorAll('.work .box, .experience .content, .skills .bar').forEach((card) => {
+        card.addEventListener('mouseenter', () => {
+            anime.remove(card);
+            anime({
+                targets: card,
+                translateY: -6,
+                duration: 260,
+                easing: 'easeOutQuad'
+            });
+        });
+        card.addEventListener('mouseleave', () => {
+            anime.remove(card);
+            anime({
+                targets: card,
+                translateY: 0,
+                duration: 320,
+                easing: 'easeOutQuad'
+            });
+        });
+    });
+}
+
+window.addEventListener('load', runPortfolioAnimations);
+// <!-- anime.js dynamic motion ends -->
 
 // <!-- tilt js effect starts -->
       VanillaTilt.init(document.querySelectorAll(".tilt"), {
@@ -103,6 +191,8 @@ const srtop = ScrollReveal({
 /* SCROLL HOME */
 srtop.reveal('.home .content h3',{delay: 200}); 
 srtop.reveal('.home .content p',{delay: 200}); 
+srtop.reveal('.home .hero-summary',{delay: 250});
+srtop.reveal('.home .hero-stats div',{interval: 120});
 srtop.reveal('.home .content .btn',{delay: 200}); 
 
 srtop.reveal('.home .image',{delay: 400}); 
@@ -120,6 +210,7 @@ srtop.reveal('.about .content h3',{delay: 300});
 srtop.reveal('.about .content .tag',{delay: 400}); 
 srtop.reveal('.about .content p',{delay: 300}); 
 srtop.reveal('.about .content .box-container',{delay: 300}); 
+srtop.reveal('.about .content .about-tags span',{interval: 100});
 srtop.reveal('.about .content .resumebtn',{delay: 300}); 
 
 

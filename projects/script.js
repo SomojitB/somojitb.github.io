@@ -20,8 +20,8 @@ $(document).ready(function(){
 document.addEventListener('visibilitychange',
 function(){
     if(document.visibilityState === "visible"){
-        document.title = "Projects | Portfolio Saurav Mukherjee";
-        $("#favicon").attr("href","/assests/images/favicon.png");
+        document.title = "Projects | Portfolio Somojit Banerjee";
+        $("#favicon").attr("href","/assests/images/favicon.jpg");
     }
     else {
         document.title = "Come Back To Portfolio";
@@ -46,7 +46,7 @@ function showProjects(projects) {
     projects.forEach(project => {
         projectsHTML += `
         <div class="box tilt">
-      <img draggable="false" src="${project.image}" alt="" />
+      <img draggable="false" src="${project.image}" alt="${project.name} project preview" />
       <div class="content">
         <div class="tag">
         <h3>${project.name}</h3>
@@ -54,8 +54,8 @@ function showProjects(projects) {
         <div class="desc">
           <p>${project.desc}</p>
           <div class="btns">
-            <a href="${project.links.view}" class="btn" target="_blank"><i class="fas fa-eye"></i> View</a>
-            <a href="${project.links.code}" class="btn" target="_blank">Code <i class="fas fa-code"></i></a>
+            <a href="${project.links.view}" class="btn" target="_blank" rel="noopener noreferrer"><i class="fas fa-eye"></i> View</a>
+            <a href="${project.links.code}" class="btn" target="_blank" rel="noopener noreferrer">Code <i class="fas fa-code"></i></a>
           </div>
         </div>
       </div>
@@ -78,7 +78,18 @@ const srtop = ScrollReveal({
 });
 
 /* SCROLL PROJECTS */
-srtop.reveal('.work .box',{interval: 200}); 
+srtop.reveal('.work .box',{interval: 200});
+
+if (typeof anime !== 'undefined' && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    anime({
+        targets: '.work .box',
+        translateY: [28, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(120),
+        duration: 800,
+        easing: 'easeOutCubic'
+    });
+}
 }
 
 getProjects().then(data => {
@@ -97,22 +108,3 @@ var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
   s0.parentNode.insertBefore(s1,s0);
   })();
 // End of Tawk.to Live Chat
-
-// disable developer mode
-document.onkeydown = function(e) {
-  if(e.keyCode == 123) {
-     return false;
-  }
-  if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-     return false;
-  }
-  if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-     return false;
-  }
-  if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-     return false;
-  }
-  if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-     return false;
-  }
-}
