@@ -17,13 +17,11 @@ const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selec
 
 function buildSignalGrid() {
   const grid = $('.signal-grid');
-  if (!grid) return;
+  if (!grid || grid.children.length) return;
 
   const fragment = document.createDocumentFragment();
-  for (let index = 0; index < 48; index += 1) {
-    const dot = document.createElement('span');
-    dot.dataset.index = String(index);
-    fragment.appendChild(dot);
+  for (let index = 0; index < 42; index += 1) {
+    fragment.appendChild(document.createElement('span'));
   }
   grid.appendChild(fragment);
 }
@@ -31,9 +29,6 @@ function buildSignalGrid() {
 function showStaticFallback() {
   $$('[data-reveal]').forEach((element) => {
     element.style.opacity = '1';
-    element.style.transform = 'none';
-  });
-  $$('[data-timeline-item]').forEach((element) => {
     element.style.transform = 'none';
   });
   $$('.count').forEach((counter) => {
@@ -60,8 +55,8 @@ function setupNavigation() {
 
     if (motionAllowed && willOpen) {
       anime({
-        targets: '.navbar a',
-        translateY: [24, 0],
+        targets: $$('.navbar a'),
+        translateY: [20, 0],
         opacity: [0, 1],
         delay: anime.stagger(55),
         duration: 480,
@@ -79,21 +74,50 @@ function setupNavigation() {
 function setupSmoothAnchors() {
   $$('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (event) => {
-      const target = $(link.getAttribute('href'));
+      const hash = link.getAttribute('href');
+      const target = hash ? $(hash) : null;
       if (!target || !motionAllowed) return;
 
       event.preventDefault();
-      const headerOffset = 88;
+      const headerOffset = target.matches('[data-section]') ? 0 : 82;
       const destination = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset);
       anime.remove(document.scrollingElement);
       anime({
         targets: document.scrollingElement,
         scrollTop: destination,
         duration: 900,
-        easing: 'easeInOutQuart'
+        easing: 'easeInOutQuart',
+        complete: () => {
+          history.replaceState(null, '', hash);
+          if (link.classList.contains('skip-link')) target.focus({ preventScroll: true });
+        }
       });
-      history.replaceState(null, '', link.getAttribute('href'));
     });
+  });
+}
+
+function setupInitialHashAlignment() {
+  if (!window.location.hash || window.location.hash === '#home') return;
+
+  let visitorHasInteracted = false;
+  const cancelAlignment = () => { visitorHasInteracted = true; };
+  ['keydown', 'pointerdown', 'touchstart', 'wheel'].forEach((eventName) => {
+    window.addEventListener(eventName, cancelAlignment, { once: true, passive: true });
+  });
+
+  const align = () => {
+    if (visitorHasInteracted) return;
+    const target = $(window.location.hash);
+    if (!target) return;
+    const headerOffset = target.matches('[data-section]') ? 0 : 82;
+    const destination = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset);
+    window.scrollTo(0, destination);
+  };
+
+  window.addEventListener('load', () => {
+    align();
+    window.setTimeout(align, 350);
+    window.setTimeout(align, 1100);
   });
 }
 
@@ -103,66 +127,65 @@ function runHeroSequence() {
   anime.timeline({ easing: 'easeOutExpo' })
     .add({
       targets: '.site-header > *',
-      translateY: [-24, 0],
+      translateY: [-22, 0],
       opacity: [0, 1],
-      delay: anime.stagger(55),
-      duration: 850
+      delay: anime.stagger(50),
+      duration: 760
     })
     .add({
       targets: '.hero-kicker',
-      translateY: [20, 0],
+      translateY: [18, 0],
       opacity: [0, 1],
-      duration: 650
-    }, '-=500')
+      duration: 560
+    }, '-=430')
     .add({
       targets: '.title-line > span',
-      translateY: ['105%', '0%'],
+      translateY: ['108%', '0%'],
       delay: anime.stagger(90),
-      duration: 920
-    }, '-=420')
+      duration: 900
+    }, '-=370')
     .add({
-      targets: '.hero-bottom',
+      targets: '.hero-intro',
       translateY: [26, 0],
       opacity: [0, 1],
-      duration: 680
-    }, '-=530')
+      duration: 620
+    }, '-=520')
     .add({
-      targets: '.portrait-frame',
-      translateY: [48, 0],
-      rotate: [2.5, 0],
+      targets: '.portrait-frame, .hero-portrait figcaption',
+      translateY: [42, 0],
       opacity: [0, 1],
-      duration: 950
-    }, '-=880')
+      delay: anime.stagger(90),
+      duration: 800
+    }, '-=760')
     .add({
-      targets: '.hero-portrait figcaption, .orbit-label',
-      translateY: [18, 0],
-      scale: [0.94, 1],
+      targets: '.proof-strip > div',
+      translateY: [24, 0],
       opacity: [0, 1],
-      delay: anime.stagger(75),
-      duration: 600
+      delay: anime.stagger(70),
+      duration: 580
     }, '-=560')
     .add({
       targets: '.signal-grid span',
       scale: [0, 1],
       opacity: [0, 1],
-      delay: anime.stagger(16, { grid: [6, 8], from: 'center' }),
-      duration: 500
-    }, '-=620');
+      delay: anime.stagger(14, { grid: [7, 6], from: 'center' }),
+      duration: 420
+    }, '-=590');
 
   anime({
     targets: '.availability-dot',
-    scale: [1, 1.38],
-    opacity: [1, 0.62],
+    scale: [1, 1.35],
+    opacity: [1, 0.58],
     direction: 'alternate',
     loop: true,
-    duration: 900,
+    duration: 850,
     easing: 'easeInOutSine'
   });
 }
 
 function setupMarquee() {
   const track = $('.marquee-track');
-  const firstGroup = $('.marquee-group', track || document);
+  const firstGroup = track ? $('.marquee-group', track) : null;
   if (!track || !firstGroup || !motionAllowed) return;
 
   const run = () => {
@@ -194,121 +217,86 @@ function setupRevealAnimations() {
       anime.remove(entry.target);
       anime({
         targets: entry.target,
-        translateY: [34, 0],
+        translateY: [32, 0],
         opacity: [0, 1],
-        duration: 760,
+        duration: 720,
         easing: 'easeOutCubic'
       });
       observer.unobserve(entry.target);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -7% 0px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -7% 0px' });
 
   elements.forEach((element) => observer.observe(element));
 }
 
 function setupCounters() {
   const counters = $$('.count');
-  const impact = $('#impact');
-  if (!impact || counters.length === 0) return;
+  const proofStrip = $('.proof-strip');
+  if (!proofStrip || counters.length === 0) return;
 
-  const setFinalValues = () => {
-    counters.forEach((counter) => {
-      counter.textContent = Number(counter.dataset.count).toLocaleString();
-    });
-  };
+  const setFinalValues = () => counters.forEach((counter) => {
+    counter.textContent = Number(counter.dataset.count).toLocaleString();
+  });
 
   if (!motionAllowed || !('IntersectionObserver' in window)) {
     setFinalValues();
     return;
   }
 
-  counters.forEach((counter) => { counter.textContent = '0'; });
+  setFinalValues();
   const observer = new IntersectionObserver((entries) => {
     if (!entries.some((entry) => entry.isIntersecting)) return;
-
-    counters.forEach((counter, index) => {
-      const state = { value: 0 };
-      const target = Number(counter.dataset.count);
-      anime({
-        targets: state,
-        value: target,
-        round: 1,
-        delay: index * 85,
-        duration: 1500,
-        easing: 'easeOutExpo',
-        update: () => { counter.textContent = state.value.toLocaleString(); },
-        complete: () => { counter.textContent = target.toLocaleString(); }
-      });
+    counters.forEach((counter) => {
+      anime.remove(counter);
+    });
+    anime({
+      targets: counters,
+      scale: [0.72, 1],
+      opacity: [0, 1],
+      delay: anime.stagger(90),
+      duration: 760,
+      easing: 'easeOutElastic(1, .72)'
     });
     observer.disconnect();
-  }, { threshold: 0.28 });
-  observer.observe(impact);
+  }, { threshold: 0.45 });
+  observer.observe(proofStrip);
 }
 
-function setupTimelineFocus() {
-  const items = $$('[data-timeline-item]');
-  if (items.length === 0) return;
-
-  items[0].classList.add('active');
-  if (!('IntersectionObserver' in window)) {
-    items.forEach((item) => item.classList.add('active'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      items.forEach((item) => item.classList.toggle('active', item === entry.target));
-      if (motionAllowed) {
-        anime.timeline({ easing: 'easeOutCubic' })
-          .add({ targets: entry.target, translateY: [22, 0], duration: 600 })
-          .add({
-            targets: $$('.role-details li', entry.target),
-            translateX: [14, 0],
-            opacity: [0.35, 1],
-            delay: anime.stagger(55),
-            duration: 420
-          }, '-=360');
-      } else {
-        entry.target.style.transform = 'none';
-      }
-    });
-  }, { threshold: 0.5, rootMargin: '-12% 0px -28% 0px' });
-
-  items.forEach((item) => observer.observe(item));
-}
-
-function setupEducationFocus() {
-  const chapters = $$('.education-chapter');
-  if (chapters.length === 0) return;
-
-  if (!('IntersectionObserver' in window)) {
-    chapters.forEach((chapter) => chapter.classList.add('active'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      chapters.forEach((chapter) => chapter.classList.toggle('active', chapter === entry.target));
-      if (motionAllowed) {
-        anime({
-          targets: $$('.chapter-meta, .education-copy h3, .education-copy > strong, .education-copy > p', entry.target),
-          translateY: [18, 0],
-          opacity: [0.35, 1],
-          delay: anime.stagger(70),
-          duration: 620,
-          easing: 'easeOutCubic'
-        });
-      }
-    });
-  }, { threshold: 0.42, rootMargin: '-8% 0px -18% 0px' });
-
-  chapters.forEach((chapter) => observer.observe(chapter));
-}
-
-function setupPointerInteractions() {
+function setupPointerMotion() {
   if (!motionAllowed || !window.matchMedia('(pointer: fine)').matches) return;
+
+  const dot = $('.cursor-dot');
+  const ring = $('.cursor-ring');
+  let pointerX = -80;
+  let pointerY = -80;
+  let ringX = -80;
+  let ringY = -80;
+
+  const renderCursor = () => {
+    ringX += (pointerX - ringX) * 0.16;
+    ringY += (pointerY - ringY) * 0.16;
+    if (ring) {
+      ring.style.left = `${ringX}px`;
+      ring.style.top = `${ringY}px`;
+    }
+    requestAnimationFrame(renderCursor);
+  };
+
+  window.addEventListener('pointermove', (event) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    if (dot) {
+      dot.style.left = `${pointerX}px`;
+      dot.style.top = `${pointerY}px`;
+    }
+  }, { passive: true });
+  renderCursor();
+
+  const interactiveSelector = 'a, button, summary, [data-project-card], [data-spotlight]';
+  $$(interactiveSelector).forEach((element) => {
+    element.addEventListener('pointerenter', () => ring?.classList.add('is-active'));
+    element.addEventListener('pointerleave', () => ring?.classList.remove('is-active'));
+  });
 
   $$('[data-magnetic]').forEach((element) => {
     element.addEventListener('pointermove', (event) => {
@@ -318,13 +306,13 @@ function setupPointerInteractions() {
         targets: element,
         translateX: (event.clientX - rect.left - rect.width / 2) * 0.14,
         translateY: (event.clientY - rect.top - rect.height / 2) * 0.14,
-        duration: 260,
+        duration: 230,
         easing: 'easeOutQuad'
       });
     });
     element.addEventListener('pointerleave', () => {
       anime.remove(element);
-      anime({ targets: element, translateX: 0, translateY: 0, duration: 500, easing: 'easeOutElastic(1, .55)' });
+      anime({ targets: element, translateX: 0, translateY: 0, duration: 520, easing: 'easeOutElastic(1, .55)' });
     });
   });
 
@@ -334,31 +322,35 @@ function setupPointerInteractions() {
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
     anime.remove(portrait);
-    anime({ targets: portrait, rotateY: x * 7, rotateX: y * -7, duration: 400, easing: 'easeOutCubic' });
+    anime({ targets: portrait, rotateY: x * 7, rotateX: y * -7, duration: 360, easing: 'easeOutCubic' });
   });
   portrait?.addEventListener('pointerleave', () => {
     anime.remove(portrait);
-    anime({ targets: portrait, rotateX: 0, rotateY: 0, duration: 700, easing: 'easeOutElastic(1, .6)' });
+    anime({ targets: portrait, rotateX: 0, rotateY: 0, duration: 650, easing: 'easeOutElastic(1, .6)' });
   });
 
   $$('[data-project-card]').forEach((card) => {
+    const image = $('.project-image img', card);
+    const arrow = $('.project-info b', card);
     card.addEventListener('pointerenter', () => {
-      anime.remove(card);
-      anime({ targets: card, translateY: -7, duration: 280, easing: 'easeOutCubic' });
+      anime.remove([card, image, arrow]);
+      anime({ targets: card, translateY: -7, duration: 260, easing: 'easeOutCubic' });
+      anime({ targets: image, scale: 1.035, duration: 650, easing: 'easeOutCubic' });
+      anime({ targets: arrow, translateX: 5, translateY: -5, duration: 280, easing: 'easeOutCubic' });
     });
     card.addEventListener('pointerleave', () => {
-      anime.remove(card);
+      anime.remove([card, image, arrow]);
       anime({ targets: card, translateY: 0, duration: 360, easing: 'easeOutCubic' });
+      anime({ targets: image, scale: 1, duration: 520, easing: 'easeOutCubic' });
+      anime({ targets: arrow, translateX: 0, translateY: 0, duration: 300, easing: 'easeOutCubic' });
     });
   });
 
-  $$('[data-spotlight]').forEach((row) => {
-    row.addEventListener('pointermove', (event) => {
-      const rect = row.getBoundingClientRect();
-      row.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
-      row.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
-      row.style.setProperty('--spotlight-left', `${event.clientX - rect.left}px`);
-      row.style.setProperty('--spotlight-top', `${event.clientY - rect.top}px`);
+  $$('[data-spotlight]').forEach((entry) => {
+    entry.addEventListener('pointermove', (event) => {
+      const rect = entry.getBoundingClientRect();
+      entry.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
+      entry.style.setProperty('--spot-y', `${event.clientY - rect.top}px`);
     });
   });
 }
@@ -370,192 +362,148 @@ function setupClickFeedback() {
   document.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
     anime.remove(pulse);
-    anime.set(pulse, { left: event.clientX, top: event.clientY });
+    pulse.style.left = `${event.clientX}px`;
+    pulse.style.top = `${event.clientY}px`;
     anime({
       targets: pulse,
-      scale: [0, 5],
+      translateX: '-50%',
+      translateY: '-50%',
+      scale: [0.2, 4.5],
       opacity: [0.9, 0],
       duration: 520,
       easing: 'easeOutCubic'
     });
   }, { passive: true });
+
+  $$('a, button, summary').forEach((element) => {
+    element.addEventListener('pointerdown', () => {
+      anime.remove(element);
+      anime({ targets: element, scale: [0.97, 1], duration: 300, easing: 'easeOutElastic(1, .7)' });
+    });
+  });
 }
 
-function setupContactMotion() {
-  const cards = $$('[data-contact-card]');
-  const channelGrid = $('.contact-channels');
-  if (cards.length === 0 || !channelGrid) return;
-
-  if (motionAllowed && 'IntersectionObserver' in window) {
-    anime.set(cards, { translateY: 34, opacity: 0 });
-    const observer = new IntersectionObserver((entries) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      anime({
-        targets: cards,
-        translateY: [34, 0],
-        opacity: [0, 1],
-        delay: anime.stagger(85),
-        duration: 720,
-        easing: 'easeOutExpo'
-      });
-      observer.disconnect();
-    }, { threshold: 0.16 });
-    observer.observe(channelGrid);
-  }
-
-  if (motionAllowed && window.matchMedia('(pointer: fine)').matches) {
-    cards.forEach((card) => {
-      const details = $$(':scope > span:not(.contact-signal), :scope > strong, :scope > small, .language-stage', card);
-      card.addEventListener('pointerenter', () => {
-        anime.remove([card, ...details]);
-        anime({ targets: card, translateY: -6, scale: 1.012, duration: 280, easing: 'easeOutCubic' });
-        anime({ targets: details, translateX: [0, 8], delay: anime.stagger(35), duration: 300, easing: 'easeOutCubic' });
-      });
-      card.addEventListener('pointerleave', () => {
-        anime.remove([card, ...details]);
-        anime({ targets: card, translateY: 0, scale: 1, duration: 420, easing: 'easeOutElastic(1, .7)' });
-        anime({ targets: details, translateX: 0, duration: 260, easing: 'easeOutCubic' });
-      });
-    });
-  }
-
-  $$('a[data-contact-card]').forEach((card) => {
-    card.addEventListener('pointerdown', () => {
-      if (!motionAllowed) return;
-      anime.remove(card);
-      anime({ targets: card, scale: [0.975, 1], duration: 360, easing: 'easeOutElastic(1, .65)' });
-    });
-  });
-
-  const phoneDisclosure = $('.contact-phone-disclosure');
-  phoneDisclosure?.addEventListener('toggle', () => {
-    if (!motionAllowed || !phoneDisclosure.open) return;
-    anime({
-      targets: $$('.contact-phone-options a', phoneDisclosure),
-      translateY: [18, 0],
-      opacity: [0, 1],
-      delay: anime.stagger(70),
-      duration: 460,
-      easing: 'easeOutCubic'
-    });
-  });
-
-  if (!motionAllowed) return;
-
-  anime({
-    targets: '.contact-signal i',
-    scaleY: [0.28, 1],
-    opacity: [0.45, 1],
-    delay: anime.stagger(110),
-    duration: 720,
-    direction: 'alternate',
-    loop: true,
-    easing: 'easeInOutSine'
-  });
-
-  const languageCard = $('[data-language-card]');
-  const currentLanguage = $('[data-language-current]', languageCard || document);
-  const languageCodes = $$('[data-language-code]', languageCard || document);
-  if (!languageCard || !currentLanguage || languageCodes.length === 0) return;
+function setupLanguageMotion() {
+  const panel = $('[data-language-card]');
+  const current = panel ? $('[data-language-current]', panel) : null;
+  const codes = panel ? $$('[data-language-code]', panel) : [];
+  if (!panel || !current || codes.length === 0 || !motionAllowed) return;
 
   const languages = ['English', 'Hindi', 'Bengali', 'Spanish'];
-  let languageIndex = 0;
-  let languageVisible = false;
+  let index = 0;
+  let visible = !('IntersectionObserver' in window);
 
   if ('IntersectionObserver' in window) {
-    const languageObserver = new IntersectionObserver((entries) => {
-      languageVisible = entries.some((entry) => entry.isIntersecting);
-    }, { threshold: 0.18 });
-    languageObserver.observe(languageCard);
-  } else {
-    languageVisible = true;
+    const observer = new IntersectionObserver((entries) => {
+      visible = entries.some((entry) => entry.isIntersecting);
+    }, { threshold: 0.25 });
+    observer.observe(panel);
   }
 
   window.setInterval(() => {
-    if (!languageVisible || document.hidden) return;
-    languageIndex = (languageIndex + 1) % languages.length;
-    anime.remove(currentLanguage);
+    if (!visible || document.hidden) return;
+    index = (index + 1) % languages.length;
+    anime.remove(current);
     anime({
-      targets: currentLanguage,
-      translateY: [0, -22],
+      targets: current,
+      translateY: [0, -20],
       opacity: [1, 0],
-      duration: 260,
+      duration: 240,
       easing: 'easeInCubic',
       complete: () => {
-        currentLanguage.textContent = languages[languageIndex];
-        languageCodes.forEach((code, index) => code.classList.toggle('active', index === languageIndex));
-        anime({
-          targets: currentLanguage,
-          translateY: [22, 0],
-          opacity: [0, 1],
-          duration: 420,
-          easing: 'easeOutExpo'
-        });
-        anime({
-          targets: languageCodes[languageIndex],
-          scale: [0.72, 1],
-          rotate: [-8, 0],
-          duration: 460,
-          easing: 'easeOutElastic(1, .65)'
-        });
+        current.textContent = languages[index];
+        codes.forEach((code, codeIndex) => code.classList.toggle('active', codeIndex === index));
+        anime({ targets: current, translateY: [20, 0], opacity: [0, 1], duration: 390, easing: 'easeOutExpo' });
+        anime({ targets: codes[index], scale: [0.72, 1], duration: 430, easing: 'easeOutElastic(1, .65)' });
       }
     });
   }, 1800);
 }
 
+function setupContactMotion() {
+  const routes = $$('[data-contact-route]');
+  if (!routes.length) return;
+
+  if (motionAllowed && window.matchMedia('(pointer: fine)').matches) {
+    routes.forEach((route) => {
+      const details = $$(':scope > span:not(.contact-signal), :scope > strong, :scope > small, :scope > b', route);
+      route.addEventListener('pointerenter', () => {
+        anime.remove(details);
+        anime({ targets: details, translateX: [0, 7], delay: anime.stagger(28), duration: 260, easing: 'easeOutCubic' });
+      });
+      route.addEventListener('pointerleave', () => {
+        anime.remove(details);
+        anime({ targets: details, translateX: 0, duration: 240, easing: 'easeOutCubic' });
+      });
+    });
+  }
+
+  const disclosure = $('.phone-disclosure');
+  disclosure?.addEventListener('toggle', () => {
+    if (!motionAllowed || !disclosure.open) return;
+    anime({
+      targets: $$('.phone-options a', disclosure),
+      translateY: [14, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(65),
+      duration: 420,
+      easing: 'easeOutCubic'
+    });
+  });
+
+  if (motionAllowed) {
+    anime({
+      targets: '.contact-signal i',
+      scaleY: [0.28, 1],
+      opacity: [0.45, 1],
+      delay: anime.stagger(105),
+      duration: 700,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine'
+    });
+  }
+}
+
 function setupScrollMotion() {
   const progress = $('.scroll-progress span');
   const header = $('[data-header]');
-  const timelineSection = $('#experience');
-  const timelineMeter = $('.timeline-meter span');
-  const parallaxImages = $$('[data-scroll-image]');
+  const images = $$('[data-scroll-image]');
   const sections = $$('[data-section][id]');
   const navLinks = $$('.navbar a');
   let ticking = false;
 
   const update = () => {
     const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progressValue = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-    if (progress) progress.style.transform = `scaleX(${progressValue})`;
+    if (progress) progress.style.transform = `scaleX(${Math.min(1, Math.max(0, window.scrollY / maxScroll))})`;
     header?.classList.toggle('compact', window.scrollY > 40);
 
     let currentSection = sections[0];
     sections.forEach((section) => {
-      if (section.getBoundingClientRect().top <= window.innerHeight * 0.34) {
-        currentSection = section;
-      }
+      if (section.getBoundingClientRect().top <= window.innerHeight * 0.34) currentSection = section;
     });
     const currentHref = currentSection ? `#${currentSection.id}` : '#home';
-    const hasMatchingLink = navLinks.some((link) => link.getAttribute('href') === currentHref);
-    navLinks.forEach((link) => {
-      link.classList.toggle('active', link.getAttribute('href') === (hasMatchingLink ? currentHref : '#home'));
-    });
+    navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === currentHref));
 
-    if (timelineSection && timelineMeter) {
-      const rect = timelineSection.getBoundingClientRect();
-      const travel = timelineSection.offsetHeight - window.innerHeight * 0.55;
-      const amount = Math.min(1, Math.max(0, (window.innerHeight * 0.35 - rect.top) / Math.max(1, travel)));
-      timelineMeter.style.transform = `scaleX(${amount})`;
-    }
-
-    if (motionAllowed) {
-      parallaxImages.forEach((image) => {
-        const rect = image.parentElement.getBoundingClientRect();
+    if (motionAllowed && window.innerWidth > 920) {
+      images.forEach((image) => {
+        const frame = image.parentElement;
+        const rect = frame.getBoundingClientRect();
         if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-        const centerDelta = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
-        image.style.transform = `translateY(${(-7 - centerDelta * 8).toFixed(2)}%)`;
+        const offset = (rect.top + rect.height / 2 - window.innerHeight / 2) / window.innerHeight;
+        image.style.transform = `translateY(${(-7 - offset * 7).toFixed(2)}%)`;
       });
     }
-
     ticking = false;
   };
 
-  window.addEventListener('scroll', () => {
+  const requestUpdate = () => {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(update);
-  }, { passive: true });
-  window.addEventListener('resize', update);
+  };
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate);
   update();
 }
 
@@ -564,24 +512,22 @@ function setupSignalMotion() {
   anime({
     targets: '.signal-grid span',
     translateY: () => anime.random(-6, 6),
-    scale: () => anime.random(70, 120) / 100,
-    opacity: () => anime.random(35, 100) / 100,
-    delay: anime.stagger(55, { grid: [6, 8], from: 'center' }),
-    duration: 1800,
+    scale: () => anime.random(72, 118) / 100,
+    opacity: () => anime.random(36, 100) / 100,
+    delay: anime.stagger(48, { grid: [7, 6], from: 'center' }),
+    duration: 1700,
     direction: 'alternate',
     loop: true,
     easing: 'easeInOutSine'
   });
 }
 
-function setupPageTitle() {
+function setupPageDetails() {
   const favicon = $('#favicon');
   document.addEventListener('visibilitychange', () => {
-    const isVisible = document.visibilityState === 'visible';
-    document.title = isVisible
-      ? 'Somojit Banerjee | Cloud Security Architect'
-      : 'Come Back To Portfolio';
-    favicon?.setAttribute('href', isVisible ? './assests/images/favicon.jpg' : './assests/images/favhand.png');
+    const visible = document.visibilityState === 'visible';
+    document.title = visible ? 'Somojit Banerjee | Cloud Security Architect' : 'Come Back To Portfolio';
+    favicon?.setAttribute('href', visible ? './assests/images/favicon.jpg' : './assests/images/favhand.png');
   });
   const year = $('#current-year');
   if (year) year.textContent = String(new Date().getFullYear());
@@ -590,15 +536,15 @@ function setupPageTitle() {
 buildSignalGrid();
 setupNavigation();
 setupSmoothAnchors();
+setupInitialHashAlignment();
 setupRevealAnimations();
 setupCounters();
-setupTimelineFocus();
-setupEducationFocus();
-setupPointerInteractions();
+setupPointerMotion();
 setupClickFeedback();
+setupLanguageMotion();
 setupContactMotion();
 setupScrollMotion();
-setupPageTitle();
+setupPageDetails();
 
 if (motionAllowed) {
   runHeroSequence();

@@ -1,20 +1,19 @@
 # Somojit Banerjee Portfolio
 
-Personal portfolio for Somojit Banerjee, focused on cloud security architecture, DevSecOps, multi-cloud security, vulnerability management, and policy-as-code.
+A compact, motion-led portfolio for Somojit Banerjee, focused on cloud security architecture, DevSecOps, and practical multi-cloud engineering.
 
 [Visit the live site](https://somojitb.github.io/)
 
-## Highlights
+## Experience
 
-- Portrait-led responsive design with a kinetic editorial layout.
-- Resume-aligned roles, dates, employers, impact metrics, tools, certifications, languages, projects, and contact details.
-- Detailed career chapters covering cloud architecture, CI/CD engineering, policy-as-code, multi-cloud operations, and vulnerability management.
-- A focused contact flow with an animated language panel and regional phone numbers revealed only when a visitor chooses to view them.
-- WhatsApp-first contact actions that work on mobile, WhatsApp Web, and the desktop client, plus a pre-addressed Gmail compose handoff for detailed enquiries.
-- Locally bundled Anime.js runtime for reliable entrance sequences, scroll reveals, counters, marquees, image parallax, timeline focus, magnetic controls, and click feedback.
-- Responsive desktop and mobile navigation with reduced-motion support.
-- Project and education imagery loaded progressively with descriptive alternative text.
-- Legacy `/projects/` and `/experience/` routes redirect into the main portfolio sections.
+The site is organized as four focused stops:
+
+- **Home** introduces Somojit, his role, and three measurable career highlights.
+- **Work** combines his verified Global Payments and Tata Consultancy Services progression with three selected projects.
+- **Profile** keeps education, certifications, and spoken languages in one concise view.
+- **Contact** provides WhatsApp, Gmail, regional phone lines, LinkedIn, and GitHub without exposing every option at once.
+
+Anime.js 3.2.2 is bundled locally and powers entrance choreography, section reveals, metric emphasis, continuous marquees, image parallax, magnetic controls, pointer feedback, language transitions, and contact interactions. Mobile employer and project tracks use compact swipe navigation, and the experience includes a reduced-motion fallback.
 
 ## Tech Stack
 
@@ -27,18 +26,18 @@ Personal portfolio for Somojit Banerjee, focused on cloud security architecture,
 
 ## Local Preview
 
-This is a static GitHub Pages site. Serve the repository root with any static file server, then open the local URL.
+This is a static GitHub Pages site. Serve the repository root, then open the local URL.
 
 ```powershell
-python -m http.server 4176 --bind 127.0.0.1
+npm run preview
 ```
 
 ## Verification
 
-Run the reproducible bundle build plus automated syntax, content, local asset, link, image, section, and fact-preservation checks with:
+Run the reproducible bundle build plus automated JavaScript syntax, resume-fact, URL, asset, image, accessibility, and security checks with:
 
 ```powershell
 npm test
 ```
 
-The `Portfolio quality` GitHub Actions workflow runs the same checks on pushes to `main` and `polish-redesign-codex`, and on pull requests targeting `main`.
+The `Portfolio quality` GitHub Actions workflow runs the same checks for pull requests targeting `main`.

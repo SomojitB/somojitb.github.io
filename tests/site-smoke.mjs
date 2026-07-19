@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
+import { request as httpRequest } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createPreviewServer } from '../scripts/preview-server.mjs';
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const indexPath = path.join(repositoryRoot, 'index.html');
-const html = await readFile(indexPath, 'utf8');
+const html = await readFile(path.join(repositoryRoot, 'index.html'), 'utf8');
 
 const expectedFacts = [
   'Mar 2025 - Present',
@@ -15,15 +16,13 @@ const expectedFacts = [
   'Mar 2021 - Jul 2022',
   'Global Payments',
   'Tata Consultancy Services',
-  '5,000+ total vulnerabilities',
+  '5,000+ vulnerabilities',
   '2,000+ high',
-  '400+ HashiCorp Sentinel policies',
-  'CloudTrail, CloudWatch, and Aternity',
-  'Cloudflare, Route 53, and Squid',
-  'Carbon Black deployment and configuration',
-  'AWS IAM policies, roles, and MFA controls',
-  'firewalls, load balancers, and VPNs',
-  'severity, exploitability, and business impact',
+  '400+ Sentinel policies',
+  'AWS / GCP / Azure',
+  'CloudTrail / CloudWatch',
+  'IAM / MFA',
+  'Firewalls / VPNs',
   'Asansol Engineering College',
   'B.Tech in Electronics &amp; Communication Engineering',
   'DAV Public School / CBSE',
@@ -31,6 +30,9 @@ const expectedFacts = [
   'Microsoft Azure Fundamentals (AZ-900)',
   'SAFe DevOps Certification',
   'English, Hindi, Bengali, Spanish',
+  'Age and Gender Recognition',
+  'Breast Cancer Detection',
+  'COVID-19 Visualisation',
   'https://wa.me/524462925594',
   'somojitb@gmail.com',
   '+52 446 292 5594',
@@ -41,30 +43,33 @@ for (const fact of expectedFacts) {
   assert.ok(html.includes(fact), `Missing verified portfolio fact: ${fact}`);
 }
 
-assert.ok(!html.includes('wa.me/+'), 'WhatsApp links must use the international number without a plus sign');
-assert.ok(!html.includes('>Call me<'), 'Phone contact cards should use location-specific labels');
-assert.equal((html.match(/data-contact-card/g) || []).length, 4, 'Expected four animated contact routes');
-assert.ok(html.includes('data-language-current'), 'Animated language stage is missing');
-assert.ok(html.includes('mail.google.com/mail/?view=cm&amp;fs=1&amp;to=somojitb@gmail.com&amp;su=Portfolio%20enquiry'), 'Gmail route is missing its recipient or subject');
-assert.match(html, /class="contact-channel contact-email"[^>]+target="_blank"[^>]+rel="noopener noreferrer"/, 'Gmail should open safely in a new tab');
-assert.match(html, /class="contact-channel contact-channel-primary"[^>]+target="_blank"[^>]+rel="noopener noreferrer"/, 'WhatsApp should open safely in a new tab');
-assert.ok(html.includes('contact-phone-disclosure'), 'Regional phone lines should be grouped in one disclosure');
-assert.match(html, /class="header-cta" href="#contact"/, 'Header call to action should lead to the contact section');
+const primarySections = ['home', 'work', 'profile', 'contact'];
+for (const sectionId of primarySections) {
+  assert.match(html, new RegExp(`<section\\b[^>]*\\bid="${sectionId}"`), `Missing primary section: ${sectionId}`);
+}
+assert.equal((html.match(/<section\b/g) || []).length, primarySections.length, 'The portfolio should remain a compact four-section experience');
 
-const requiredSections = ['home', 'impact', 'expertise', 'experience', 'projects', 'education', 'contact'];
-for (const sectionId of requiredSections) {
-  assert.match(html, new RegExp(`<section\\b[^>]*\\bid="${sectionId}"`), `Missing section landmark: ${sectionId}`);
+for (const anchorId of ['experience', 'projects', 'education']) {
+  assert.match(html, new RegExp(`\\bid="${anchorId}"`), `Missing legacy deep-link target: ${anchorId}`);
 }
 
 assert.equal((html.match(/<h1\b/g) || []).length, 1, 'The page must contain exactly one h1');
+assert.equal((html.match(/data-project-card/g) || []).length, 3, 'Expected three selected projects');
+assert.equal((html.match(/data-contact-route/g) || []).length, 3, 'Expected two contact actions and one regional phone disclosure');
+assert.equal((html.match(/data-language-code/g) || []).length, 4, 'Expected four animated language codes');
+assert.ok(html.includes('data-language-current'), 'Animated language stage is missing');
+assert.ok(!html.includes('wa.me/+'), 'WhatsApp URLs must omit the plus sign from the phone parameter');
+assert.match(html, /class="header-cta" href="#contact"/, 'Header call to action should lead to contact');
+assert.match(html, /mail\.google\.com\/mail\/\?view=cm&amp;fs=1&amp;to=somojitb@gmail\.com&amp;su=Portfolio%20enquiry/, 'Gmail compose route is missing its recipient or subject');
 
 const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 assert.equal(new Set(ids).size, ids.length, 'Duplicate HTML id detected');
 
 const imageTags = [...html.matchAll(/<img\b[^>]*>/g)].map((match) => match[0]);
-assert.ok(imageTags.length >= 6, 'Expected portrait, matching project, college, and school imagery');
+assert.equal(imageTags.length, 5, 'Expected one portrait, three project images, and one college image');
 for (const tag of imageTags) {
   assert.match(tag, /\salt="[^"]+"/, `Image is missing useful alt text: ${tag}`);
+  assert.match(tag, /\sdecoding="async"/, `Image should decode asynchronously: ${tag}`);
 }
 
 const externalTabs = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map((match) => match[0]);
@@ -122,7 +127,50 @@ const interactionLayer = await readFile(path.join(repositoryRoot, 'assests/js/sc
 const bundle = await readFile(path.join(repositoryRoot, 'assests/js/app.bundle.js'), 'utf8');
 assert.ok(motionEngine.includes('anime.js v3.2.2'), 'Pinned Anime.js runtime is missing');
 assert.ok(bundle.includes('anime.js v3.2.2'), 'Browser bundle does not contain Anime.js');
-assert.ok(bundle.includes("setupScrollMotion();"), 'Browser bundle is missing the portfolio interaction layer');
+assert.ok(bundle.includes('setupScrollMotion();'), 'Browser bundle is missing the portfolio interaction layer');
+assert.ok(bundle.includes('setupPointerMotion();'), 'Browser bundle is missing pointer interactions');
+assert.ok(bundle.includes('setupLanguageMotion();'), 'Browser bundle is missing language animation');
+assert.ok(interactionLayer.includes("target.focus({ preventScroll: true })"), 'Animated skip link must transfer keyboard focus');
+assert.doesNotMatch(interactionLayer, /counter\.textContent\s*=\s*['"]0['"]/, 'Career metrics must not display inaccurate intermediate values');
 assert.equal(bundle, `${motionEngine.trimEnd()}\n\n${interactionLayer.trimEnd()}\n`, 'Browser bundle is out of date with its source files');
 
-console.log(`Site smoke checks passed: ${expectedFacts.length} facts, ${requiredSections.length} sections, ${imageTags.length} images, ${localReferences.length} local assets.`);
+for (const [legacyPath, destination] of [['projects/index.html', '../#projects'], ['experience/index.html', '../#experience']]) {
+  const redirectHtml = await readFile(path.join(repositoryRoot, legacyPath), 'utf8');
+  assert.ok(redirectHtml.includes(`content="0; url=${destination}"`), `${legacyPath} has the wrong redirect target`);
+  assert.ok(redirectHtml.includes(`href="${destination}"`), `${legacyPath} fallback link has the wrong target`);
+  assert.match(redirectHtml, /Content-Security-Policy[^>]+object-src 'none'/, `${legacyPath} is missing its restrictive CSP`);
+  assert.doesNotMatch(redirectHtml, /https?:\/\//, `${legacyPath} should not load third-party resources`);
+}
+
+const notFoundHtml = await readFile(path.join(repositoryRoot, '404.html'), 'utf8');
+assert.match(notFoundHtml, /Content-Security-Policy[^>]+object-src 'none'/, '404 page is missing its restrictive CSP');
+assert.doesNotMatch(notFoundHtml, /<(?:script|link)[^>]+https?:\/\//, '404 page should not load third-party resources');
+assert.doesNotMatch(notFoundHtml, /#(?:about|skills)/, '404 page links to a removed section');
+assert.doesNotMatch(notFoundHtml, /\son[a-z]+\s*=/i, '404 page contains an inline event handler');
+for (const destination of ['./#home', './#work', './#contact']) {
+  assert.ok(notFoundHtml.includes(`href="${destination}"`), `404 page is missing ${destination}`);
+}
+
+const css = await readFile(path.join(repositoryRoot, 'assests/css/style.css'), 'utf8');
+assert.doesNotMatch(css, /cursor:\s*none/, 'The native cursor must remain visible when pointer animation is unavailable');
+assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]+body,[\s\S]+cursor: auto;/, 'Reduced-motion mode must restore the native cursor');
+
+const previewServer = createPreviewServer(repositoryRoot);
+await new Promise((resolve, reject) => {
+  previewServer.once('error', reject);
+  previewServer.listen(0, '127.0.0.1', resolve);
+});
+const previewPort = previewServer.address().port;
+const requestStatus = (requestPath) => new Promise((resolve, reject) => {
+  const request = httpRequest({ host: '127.0.0.1', port: previewPort, path: requestPath }, (response) => {
+    response.resume();
+    response.once('end', () => resolve(response.statusCode));
+  });
+  request.once('error', reject);
+  request.end();
+});
+assert.equal(await requestStatus('/%E0%A4%A'), 400, 'Malformed preview URL should return 400 without terminating the server');
+assert.equal(await requestStatus('/'), 200, 'Preview server should remain available after a malformed request');
+await new Promise((resolve, reject) => previewServer.close((error) => error ? reject(error) : resolve()));
+
+console.log(`Site smoke checks passed: ${expectedFacts.length} facts, ${primarySections.length} primary sections, ${imageTags.length} images, ${localReferences.length} local assets.`);
