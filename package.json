@@ -5,6 +5,7 @@
   "description": "Static portfolio for Somojit Banerjee",
   "scripts": {
     "build": "node scripts/build-bundle.mjs",
+    "preview": "node scripts/preview-server.mjs",
     "test": "npm run build && npm run test:syntax && npm run test:site",
     "test:syntax": "node --check assests/js/script.js && node --check assests/js/motion-engine.js && node --check assests/js/app.bundle.js",
     "test:site": "node tests/site-smoke.mjs"
