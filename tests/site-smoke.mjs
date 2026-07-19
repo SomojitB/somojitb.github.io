@@ -16,13 +16,17 @@ const expectedFacts = [
   'Mar 2021 - Jul 2022',
   'Global Payments',
   'Tata Consultancy Services',
-  '5,000+ vulnerabilities',
+  'Cloud Security Architect',
+  'Senior DevOps Engineer',
+  'Cloud Security Engineer',
+  'Vulnerability Management SME',
+  '500+ critical',
+  '5,000+ total vulnerabilities',
   '2,000+ high',
   '400+ Sentinel policies',
   'AWS / GCP / Azure',
-  'CloudTrail / CloudWatch',
-  'IAM / MFA',
-  'Firewalls / VPNs',
+  'Terraform / OPA / Rego',
+  'Rapid7 / Tenable.io',
   'Asansol Engineering College',
   'B.Tech in Electronics &amp; Communication Engineering',
   'DAV Public School / CBSE',
@@ -130,7 +134,17 @@ assert.ok(bundle.includes('anime.js v3.2.2'), 'Browser bundle does not contain A
 assert.ok(bundle.includes('setupScrollMotion();'), 'Browser bundle is missing the portfolio interaction layer');
 assert.ok(bundle.includes('setupPointerMotion();'), 'Browser bundle is missing pointer interactions');
 assert.ok(bundle.includes('setupLanguageMotion();'), 'Browser bundle is missing language animation');
+assert.ok(motionEngine.includes('installAnimationFrameFallback'), 'Motion engine must support browsers without requestAnimationFrame');
+assert.ok(motionEngine.includes("typeof window.cancelAnimationFrame !== 'function'"), 'Motion engine must independently provide cancellation support');
+assert.ok(interactionLayer.includes("document.documentElement.dataset.motion = motionAllowed ? 'enabled' : 'static'"), 'Runtime must publish its motion state');
+assert.ok(interactionLayer.includes("typeof window.matchMedia === 'function'"), 'Motion preferences must tolerate browsers without matchMedia');
+assert.ok(interactionLayer.includes('window.anime.running.slice()'), 'Static recovery must stop active Anime.js instances');
+assert.ok((interactionLayer.match(/if \(!motionAllowed\) return;/g) || []).length >= 10, 'Animation callbacks must honor late static recovery');
+assert.ok(interactionLayer.includes('!smoothScrollActive'), 'Parallax must pause during long animated navigation');
+assert.ok(interactionLayer.includes("anime.set(headerElements, { translateY: 0, opacity: 1 })"), 'Navigation must finish the header entrance state before scrolling');
 assert.ok(interactionLayer.includes("target.focus({ preventScroll: true })"), 'Animated skip link must transfer keyboard focus');
+assert.doesNotMatch(interactionLayer, /window\.location\.hash === ['"]#home['"]/, 'Home deep links must override stale browser scroll restoration');
+assert.ok(interactionLayer.includes('window.location.hash !== initialHash'), 'Initial hash correction must not override later navigation');
 assert.doesNotMatch(interactionLayer, /counter\.textContent\s*=\s*['"]0['"]/, 'Career metrics must not display inaccurate intermediate values');
 assert.equal(bundle, `${motionEngine.trimEnd()}\n\n${interactionLayer.trimEnd()}\n`, 'Browser bundle is out of date with its source files');
 
@@ -152,6 +166,7 @@ for (const destination of ['./#home', './#work', './#contact']) {
 }
 
 const css = await readFile(path.join(repositoryRoot, 'assests/css/style.css'), 'utf8');
+assert.match(css, /\.motion-enabled \[data-reveal\]/, 'Reveal elements may only be hidden after motion is enabled');
 assert.doesNotMatch(css, /cursor:\s*none/, 'The native cursor must remain visible when pointer animation is unavailable');
 assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]+body,[\s\S]+cursor: auto;/, 'Reduced-motion mode must restore the native cursor');
 
