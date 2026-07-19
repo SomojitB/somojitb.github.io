@@ -147,6 +147,19 @@ function setupSmoothAnchors() {
 }
 
 function setupInitialHashAlignment() {
+  const navigationEntry = typeof window.performance?.getEntriesByType === 'function'
+    ? window.performance.getEntriesByType('navigation')[0]
+    : null;
+  const isReload = navigationEntry
+    ? navigationEntry.type === 'reload'
+    : window.performance?.navigation?.type === 1;
+
+  if (isReload) {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+    window.history.replaceState(null, '', '#home');
+    window.scrollTo(0, 0);
+  }
+
   if (!window.location.hash) return;
   const initialHash = window.location.hash;
 
