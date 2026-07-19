@@ -381,6 +381,128 @@ function setupClickFeedback() {
   }, { passive: true });
 }
 
+function setupContactMotion() {
+  const cards = $$('[data-contact-card]');
+  const channelGrid = $('.contact-channels');
+  if (cards.length === 0 || !channelGrid) return;
+
+  if (motionAllowed && 'IntersectionObserver' in window) {
+    anime.set(cards, { translateY: 34, opacity: 0 });
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      anime({
+        targets: cards,
+        translateY: [34, 0],
+        opacity: [0, 1],
+        delay: anime.stagger(85),
+        duration: 720,
+        easing: 'easeOutExpo'
+      });
+      observer.disconnect();
+    }, { threshold: 0.16 });
+    observer.observe(channelGrid);
+  }
+
+  if (motionAllowed && window.matchMedia('(pointer: fine)').matches) {
+    cards.forEach((card) => {
+      const details = $$(':scope > span:not(.contact-signal), :scope > strong, :scope > small, .language-stage', card);
+      card.addEventListener('pointerenter', () => {
+        anime.remove([card, ...details]);
+        anime({ targets: card, translateY: -6, scale: 1.012, duration: 280, easing: 'easeOutCubic' });
+        anime({ targets: details, translateX: [0, 8], delay: anime.stagger(35), duration: 300, easing: 'easeOutCubic' });
+      });
+      card.addEventListener('pointerleave', () => {
+        anime.remove([card, ...details]);
+        anime({ targets: card, translateY: 0, scale: 1, duration: 420, easing: 'easeOutElastic(1, .7)' });
+        anime({ targets: details, translateX: 0, duration: 260, easing: 'easeOutCubic' });
+      });
+    });
+  }
+
+  $$('a[data-contact-card]').forEach((card) => {
+    card.addEventListener('pointerdown', () => {
+      if (!motionAllowed) return;
+      anime.remove(card);
+      anime({ targets: card, scale: [0.975, 1], duration: 360, easing: 'easeOutElastic(1, .65)' });
+    });
+  });
+
+  const phoneDisclosure = $('.contact-phone-disclosure');
+  phoneDisclosure?.addEventListener('toggle', () => {
+    if (!motionAllowed || !phoneDisclosure.open) return;
+    anime({
+      targets: $$('.contact-phone-options a', phoneDisclosure),
+      translateY: [18, 0],
+      opacity: [0, 1],
+      delay: anime.stagger(70),
+      duration: 460,
+      easing: 'easeOutCubic'
+    });
+  });
+
+  if (!motionAllowed) return;
+
+  anime({
+    targets: '.contact-signal i',
+    scaleY: [0.28, 1],
+    opacity: [0.45, 1],
+    delay: anime.stagger(110),
+    duration: 720,
+    direction: 'alternate',
+    loop: true,
+    easing: 'easeInOutSine'
+  });
+
+  const languageCard = $('[data-language-card]');
+  const currentLanguage = $('[data-language-current]', languageCard || document);
+  const languageCodes = $$('[data-language-code]', languageCard || document);
+  if (!languageCard || !currentLanguage || languageCodes.length === 0) return;
+
+  const languages = ['English', 'Hindi', 'Bengali', 'Spanish'];
+  let languageIndex = 0;
+  let languageVisible = false;
+
+  if ('IntersectionObserver' in window) {
+    const languageObserver = new IntersectionObserver((entries) => {
+      languageVisible = entries.some((entry) => entry.isIntersecting);
+    }, { threshold: 0.18 });
+    languageObserver.observe(languageCard);
+  } else {
+    languageVisible = true;
+  }
+
+  window.setInterval(() => {
+    if (!languageVisible || document.hidden) return;
+    languageIndex = (languageIndex + 1) % languages.length;
+    anime.remove(currentLanguage);
+    anime({
+      targets: currentLanguage,
+      translateY: [0, -22],
+      opacity: [1, 0],
+      duration: 260,
+      easing: 'easeInCubic',
+      complete: () => {
+        currentLanguage.textContent = languages[languageIndex];
+        languageCodes.forEach((code, index) => code.classList.toggle('active', index === languageIndex));
+        anime({
+          targets: currentLanguage,
+          translateY: [22, 0],
+          opacity: [0, 1],
+          duration: 420,
+          easing: 'easeOutExpo'
+        });
+        anime({
+          targets: languageCodes[languageIndex],
+          scale: [0.72, 1],
+          rotate: [-8, 0],
+          duration: 460,
+          easing: 'easeOutElastic(1, .65)'
+        });
+      }
+    });
+  }, 1800);
+}
+
 function setupScrollMotion() {
   const progress = $('.scroll-progress span');
   const header = $('[data-header]');
@@ -452,33 +574,6 @@ function setupSignalMotion() {
   });
 }
 
-function setupLanguageMotion() {
-  const languageTokens = $$('.language-orbit span');
-  if (!motionAllowed || languageTokens.length === 0) return;
-
-  languageTokens.forEach((token, index) => {
-    anime({
-      targets: token,
-      translateY: index % 2 === 0 ? [-8, 9] : [10, -7],
-      rotate: index % 2 === 0 ? [-3, 4] : [4, -3],
-      direction: 'alternate',
-      loop: true,
-      duration: 1700 + index * 180,
-      easing: 'easeInOutSine'
-    });
-  });
-
-  anime({
-    targets: '.location-route i',
-    scaleX: [0.15, 1],
-    transformOrigin: 'left center',
-    direction: 'alternate',
-    loop: true,
-    duration: 1800,
-    easing: 'easeInOutCubic'
-  });
-}
-
 function setupPageTitle() {
   const favicon = $('#favicon');
   document.addEventListener('visibilitychange', () => {
@@ -501,6 +596,7 @@ setupTimelineFocus();
 setupEducationFocus();
 setupPointerInteractions();
 setupClickFeedback();
+setupContactMotion();
 setupScrollMotion();
 setupPageTitle();
 
@@ -508,7 +604,6 @@ if (motionAllowed) {
   runHeroSequence();
   setupMarquee();
   setupSignalMotion();
-  setupLanguageMotion();
 } else {
   showStaticFallback();
 }
