@@ -145,6 +145,9 @@ assert.ok(interactionLayer.includes("anime.set(headerElements, { translateY: 0, 
 assert.ok(interactionLayer.includes("target.focus({ preventScroll: true })"), 'Animated skip link must transfer keyboard focus');
 assert.doesNotMatch(interactionLayer, /window\.location\.hash === ['"]#home['"]/, 'Home deep links must override stale browser scroll restoration');
 assert.ok(interactionLayer.includes('window.location.hash !== initialHash'), 'Initial hash correction must not override later navigation');
+assert.ok(interactionLayer.includes("navigationEntry.type === 'reload'"), 'Reload navigation must be detected explicitly');
+assert.ok(interactionLayer.includes("window.history.replaceState(null, '', '#home')"), 'Reloads must return to the home section');
+assert.ok(interactionLayer.includes("window.history.scrollRestoration = 'manual'"), 'Reloads must disable stale browser scroll restoration');
 assert.doesNotMatch(interactionLayer, /counter\.textContent\s*=\s*['"]0['"]/, 'Career metrics must not display inaccurate intermediate values');
 assert.equal(bundle, `${motionEngine.trimEnd()}\n\n${interactionLayer.trimEnd()}\n`, 'Browser bundle is out of date with its source files');
 
