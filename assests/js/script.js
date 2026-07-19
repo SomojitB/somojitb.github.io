@@ -1,8 +1,13 @@
 document.documentElement.classList.add('js');
 
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const supportsMatchMedia = typeof window.matchMedia === 'function';
+const prefersReducedMotion = supportsMatchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasFinePointer = supportsMatchMedia && window.matchMedia('(pointer: fine)').matches;
 const hasAnime = typeof window.anime === 'function';
-const motionAllowed = hasAnime && !prefersReducedMotion;
+let motionAllowed = hasAnime && !prefersReducedMotion;
+let smoothScrollActive = false;
+document.documentElement.dataset.motion = motionAllowed ? 'enabled' : 'static';
+document.documentElement.classList.toggle('motion-enabled', motionAllowed);
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
@@ -18,9 +23,26 @@ function buildSignalGrid() {
 }
 
 function showStaticFallback() {
+  motionAllowed = false;
+  document.documentElement.dataset.motion = 'static';
+  document.documentElement.classList.remove('motion-enabled');
+  if (hasAnime) window.anime.running.slice().forEach((animation) => animation.pause());
+
+  const animatedElements = $$([
+    '.site-header > *', '.hero-kicker', '.title-line > span', '.hero-intro',
+    '.portrait-frame', '.hero-portrait figcaption', '.proof-strip > div',
+    '.signal-grid span', '.marquee-track', '.availability-dot', '[data-reveal]',
+    '.count', '.click-pulse', '.contact-signal i', '[data-language-current]',
+    '[data-language-code]', '[data-magnetic]', '[data-tilt]', '[data-project-card]',
+    '.project-image img', '.project-info b'
+  ].join(','));
+  animatedElements.forEach((element) => {
+    element.style.removeProperty('transform');
+    element.style.removeProperty('opacity');
+  });
+
   $$('[data-reveal]').forEach((element) => {
     element.style.opacity = '1';
-    element.style.transform = 'none';
   });
   $$('.count').forEach((counter) => {
     counter.textContent = Number(counter.dataset.count).toLocaleString();
@@ -72,13 +94,20 @@ function setupSmoothAnchors() {
       event.preventDefault();
       const headerOffset = target.matches('[data-section]') ? 0 : 82;
       const destination = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset);
+      const distance = Math.abs(destination - window.scrollY);
+      const duration = Math.min(720, Math.max(420, 360 + distance * 0.08));
+      const headerElements = $$('.site-header > *');
+      anime.remove(headerElements);
+      anime.set(headerElements, { translateY: 0, opacity: 1 });
       anime.remove(document.scrollingElement);
+      smoothScrollActive = true;
       anime({
         targets: document.scrollingElement,
         scrollTop: destination,
-        duration: 900,
+        duration,
         easing: 'easeInOutQuart',
         complete: () => {
+          smoothScrollActive = false;
           history.replaceState(null, '', hash);
           if (link.classList.contains('skip-link')) target.focus({ preventScroll: true });
         }
@@ -88,7 +117,8 @@ function setupSmoothAnchors() {
 }
 
 function setupInitialHashAlignment() {
-  if (!window.location.hash || window.location.hash === '#home') return;
+  if (!window.location.hash) return;
+  const initialHash = window.location.hash;
 
   let visitorHasInteracted = false;
   const cancelAlignment = () => { visitorHasInteracted = true; };
@@ -97,8 +127,8 @@ function setupInitialHashAlignment() {
   });
 
   const align = () => {
-    if (visitorHasInteracted) return;
-    const target = $(window.location.hash);
+    if (visitorHasInteracted || window.location.hash !== initialHash) return;
+    const target = $(initialHash);
     if (!target) return;
     const headerOffset = target.matches('[data-section]') ? 0 : 82;
     const destination = Math.max(0, target.getBoundingClientRect().top + window.scrollY - headerOffset);
@@ -180,6 +210,7 @@ function setupMarquee() {
   if (!track || !firstGroup || !motionAllowed) return;
 
   const run = () => {
+    if (!motionAllowed) return;
     anime.remove(track);
     anime.set(track, { translateX: 0 });
     anime({
@@ -203,6 +234,10 @@ function setupRevealAnimations() {
   }
 
   const observer = new IntersectionObserver((entries) => {
+    if (!motionAllowed) {
+      observer.disconnect();
+      return;
+    }
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       anime.remove(entry.target);
@@ -236,6 +271,10 @@ function setupCounters() {
 
   setFinalValues();
   const observer = new IntersectionObserver((entries) => {
+    if (!motionAllowed) {
+      observer.disconnect();
+      return;
+    }
     if (!entries.some((entry) => entry.isIntersecting)) return;
     counters.forEach((counter) => {
       anime.remove(counter);
@@ -254,7 +293,7 @@ function setupCounters() {
 }
 
 function setupPointerMotion() {
-  if (!motionAllowed || !window.matchMedia('(pointer: fine)').matches) return;
+  if (!motionAllowed || !hasFinePointer) return;
 
   const dot = $('.cursor-dot');
   const ring = $('.cursor-ring');
@@ -264,6 +303,7 @@ function setupPointerMotion() {
   let ringY = -80;
 
   const renderCursor = () => {
+    if (!motionAllowed) return;
     ringX += (pointerX - ringX) * 0.16;
     ringY += (pointerY - ringY) * 0.16;
     if (ring) {
@@ -274,6 +314,7 @@ function setupPointerMotion() {
   };
 
   window.addEventListener('pointermove', (event) => {
+    if (!motionAllowed) return;
     pointerX = event.clientX;
     pointerY = event.clientY;
     if (dot) {
@@ -291,6 +332,7 @@ function setupPointerMotion() {
 
   $$('[data-magnetic]').forEach((element) => {
     element.addEventListener('pointermove', (event) => {
+      if (!motionAllowed) return;
       const rect = element.getBoundingClientRect();
       anime.remove(element);
       anime({
@@ -302,6 +344,7 @@ function setupPointerMotion() {
       });
     });
     element.addEventListener('pointerleave', () => {
+      if (!motionAllowed) return;
       anime.remove(element);
       anime({ targets: element, translateX: 0, translateY: 0, duration: 520, easing: 'easeOutElastic(1, .55)' });
     });
@@ -309,6 +352,7 @@ function setupPointerMotion() {
 
   const portrait = $('[data-tilt]');
   portrait?.addEventListener('pointermove', (event) => {
+    if (!motionAllowed) return;
     const rect = portrait.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - 0.5;
     const y = (event.clientY - rect.top) / rect.height - 0.5;
@@ -316,6 +360,7 @@ function setupPointerMotion() {
     anime({ targets: portrait, rotateY: x * 7, rotateX: y * -7, duration: 360, easing: 'easeOutCubic' });
   });
   portrait?.addEventListener('pointerleave', () => {
+    if (!motionAllowed) return;
     anime.remove(portrait);
     anime({ targets: portrait, rotateX: 0, rotateY: 0, duration: 650, easing: 'easeOutElastic(1, .6)' });
   });
@@ -324,12 +369,14 @@ function setupPointerMotion() {
     const image = $('.project-image img', card);
     const arrow = $('.project-info b', card);
     card.addEventListener('pointerenter', () => {
+      if (!motionAllowed) return;
       anime.remove([card, image, arrow]);
       anime({ targets: card, translateY: -7, duration: 260, easing: 'easeOutCubic' });
       anime({ targets: image, scale: 1.035, duration: 650, easing: 'easeOutCubic' });
       anime({ targets: arrow, translateX: 5, translateY: -5, duration: 280, easing: 'easeOutCubic' });
     });
     card.addEventListener('pointerleave', () => {
+      if (!motionAllowed) return;
       anime.remove([card, image, arrow]);
       anime({ targets: card, translateY: 0, duration: 360, easing: 'easeOutCubic' });
       anime({ targets: image, scale: 1, duration: 520, easing: 'easeOutCubic' });
@@ -351,6 +398,7 @@ function setupClickFeedback() {
   if (!pulse || !motionAllowed) return;
 
   document.addEventListener('pointerdown', (event) => {
+    if (!motionAllowed) return;
     if (event.button !== 0) return;
     anime.remove(pulse);
     pulse.style.left = `${event.clientX}px`;
@@ -368,6 +416,7 @@ function setupClickFeedback() {
 
   $$('a, button, summary').forEach((element) => {
     element.addEventListener('pointerdown', () => {
+      if (!motionAllowed) return;
       anime.remove(element);
       anime({ targets: element, scale: [0.97, 1], duration: 300, easing: 'easeOutElastic(1, .7)' });
     });
@@ -392,7 +441,7 @@ function setupLanguageMotion() {
   }
 
   window.setInterval(() => {
-    if (!visible || document.hidden) return;
+    if (!motionAllowed || !visible || document.hidden) return;
     index = (index + 1) % languages.length;
     anime.remove(current);
     anime({
@@ -415,14 +464,16 @@ function setupContactMotion() {
   const routes = $$('[data-contact-route]');
   if (!routes.length) return;
 
-  if (motionAllowed && window.matchMedia('(pointer: fine)').matches) {
+  if (motionAllowed && hasFinePointer) {
     routes.forEach((route) => {
       const details = $$(':scope > span:not(.contact-signal), :scope > strong, :scope > small, :scope > b', route);
       route.addEventListener('pointerenter', () => {
+        if (!motionAllowed) return;
         anime.remove(details);
         anime({ targets: details, translateX: [0, 7], delay: anime.stagger(28), duration: 260, easing: 'easeOutCubic' });
       });
       route.addEventListener('pointerleave', () => {
+        if (!motionAllowed) return;
         anime.remove(details);
         anime({ targets: details, translateX: 0, duration: 240, easing: 'easeOutCubic' });
       });
@@ -476,7 +527,7 @@ function setupScrollMotion() {
     const currentHref = currentSection ? `#${currentSection.id}` : '#home';
     navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === currentHref));
 
-    if (motionAllowed && window.innerWidth > 920) {
+    if (motionAllowed && !smoothScrollActive && window.innerWidth > 920) {
       images.forEach((image) => {
         const frame = image.parentElement;
         const rect = frame.getBoundingClientRect();
@@ -524,23 +575,28 @@ function setupPageDetails() {
   if (year) year.textContent = String(new Date().getFullYear());
 }
 
-buildSignalGrid();
-setupNavigation();
-setupSmoothAnchors();
-setupInitialHashAlignment();
-setupRevealAnimations();
-setupCounters();
-setupPointerMotion();
-setupClickFeedback();
-setupLanguageMotion();
-setupContactMotion();
-setupScrollMotion();
-setupPageDetails();
+try {
+  buildSignalGrid();
+  setupNavigation();
+  setupSmoothAnchors();
+  setupInitialHashAlignment();
+  setupRevealAnimations();
+  setupCounters();
+  setupPointerMotion();
+  setupClickFeedback();
+  setupLanguageMotion();
+  setupContactMotion();
+  setupScrollMotion();
+  setupPageDetails();
 
-if (motionAllowed) {
-  runHeroSequence();
-  setupMarquee();
-  setupSignalMotion();
-} else {
+  if (motionAllowed) {
+    runHeroSequence();
+    setupMarquee();
+    setupSignalMotion();
+  } else {
+    showStaticFallback();
+  }
+} catch (error) {
   showStaticFallback();
+  console.error('Portfolio interaction layer could not initialize.', error);
 }

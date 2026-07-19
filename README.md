@@ -8,7 +8,7 @@ A compact, motion-led portfolio for Somojit Banerjee, focused on cloud security 
 
 The site is organized as four focused stops:
 
-- **Home** introduces Somojit, his role, and three measurable career highlights.
+- **Home** introduces Somojit as a Cloud Security Architect and presents three measurable career highlights.
 - **Work** combines his verified Global Payments and Tata Consultancy Services progression with three selected projects.
 - **Profile** keeps education, certifications, and spoken languages in one concise view.
 - **Contact** provides WhatsApp, Gmail, regional phone lines, LinkedIn, and GitHub without exposing every option at once.
